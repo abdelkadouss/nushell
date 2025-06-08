@@ -136,24 +136,6 @@ $env.MOJO_HOME = $"($env.HOME)/.modular/bin";
 # browser
 $env.BROWSER = 'zen';
 
-# 3 party packges
-$env.nu_3pp = ($env.XDG_CONFIG_HOME | path join "nushell/3pp/");
-
-# the templates dir
-if not ($env.HOME | path join ".templates" | path exists) { mkdir ($env.HOME | path join ".templates") };
-$env.TEMPLATES_DIR = ($env.HOME | path join ".templates");
-
-# github
-$env.MY_GITHUB_ACCOUNT = "abdelkadouss";
-
-# penpot
-$env.penpot_path = "/Applications/Penpot.app/Contents/server/docker-compose.yaml";
-
-# excalidraw
-$env.excalidraw_path = "/Users/abdelkdous/src/excalidraw/excalidraw/excalidraw-app";
-
-$env.process_pid = {};
-
 # git
 $env.GIT_CONFIG_GLOBAL = ($env.XDG_CONFIG_HOME | path join "git/config");
 $env.GIT_TEMPLATE_DIR = ($env.XDG_CONFIG_HOME | path join "git");

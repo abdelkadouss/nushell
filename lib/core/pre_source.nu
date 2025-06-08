@@ -1,3 +1,8 @@
+# config
+if not ( ($env.HOME | path join ".templates") | path exists ) {
+  mkdir ($env.HOME | path join ".templates");
+}
+
 # starship
 if not ("~/.cache/starship/init.nu" | path exists) {
   mkdir ~/.cache/starship;

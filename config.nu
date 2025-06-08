@@ -218,6 +218,9 @@ $env.config = {
         }
       }
     },
+    new: {
+      templates_dir: ($env.HOME | path join ".templates")
+    },
     nupsql: {
       databases: [
         {
@@ -367,18 +370,18 @@ $env.config = {
 
   keybindings: [
     {
-        name: help_menu
-        modifier: control
-        keycode: char_f
-        mode: [emacs, vi_insert, vi_normal]
-        event: { send: menu name: help_menu }
+      name: help_menu
+      modifier: control
+      keycode: char_f
+      mode: [emacs, vi_insert, vi_normal]
+      event: { send: menu name: help_menu }
     }
     {
-        name: next_page_menu
-        modifier: control
-        keycode: char_x
-        mode: [emacs, vi_insert, vi_normal]
-        event: { send: menupagenext }
+      name: next_page_menu
+      modifier: control
+      keycode: char_x
+      mode: [emacs, vi_insert, vi_normal]
+      event: { send: menupagenext }
     }
     # {
     #     name: undo_or_previous_page_menu

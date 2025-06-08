@@ -35,9 +35,6 @@ use new.nu;
 # git short interface.
 use g.nu;
 
-# penpot
-use penpot.nu;
-
 # nupm
 use nupm *;
 

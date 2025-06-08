@@ -1,6 +1,6 @@
 use "t.nu";
 
-def templates [] { (ls $env.TEMPLATES_DIR | where name =~ ".nu" | merge (ls $env.TEMPLATES_DIR | where name =~ ".nuon") | get name | each {|e| $e | path parse | get stem }) }
+def templates [] { (ls $env.config.plugins.new.templates_dir?| where name =~ ".nu" | merge (ls $env.config.plugins.new.templates_dir?| where name =~ ".nuon") | get name | each {|e| $e | path parse | get stem }) }
 
 const UNACCEPTED_NAME = "lib";
 
@@ -8,7 +8,7 @@ const UNACCEPTED_NAME = "lib";
 export def main [name: string@templates] {
   if ($name == $UNACCEPTED_NAME) { print $"(ansi red_bold)ERR: (ansi reset)Can't use name (ansi underline)'($UNACCEPTED_NAME)'(ansi reset) as template name!"; return; };
 
-  let base = ( $env.TEMPLATES_DIR );
+  let base = ( $env.config.plugins.new.templates_dir?);
   let struct = $base | path join $"($name).nuon";
   let run = $base | path join $"($name).nu";
 

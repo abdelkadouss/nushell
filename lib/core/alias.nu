@@ -1,6 +1,3 @@
-# excalidraw
-alias excalidraw = do { cd $env.excalidraw_path; bun start; cd -; };
-
 # zoxide
 alias cd = z;
 alias cdi = zi;
