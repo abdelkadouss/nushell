@@ -4,6 +4,7 @@
 # plugins
 /plugins/bin/*
 /plugins.toml
+/plugin.msgpackz
 
 # history
 /history.txt
