@@ -139,9 +139,6 @@ $env.BROWSER = 'zen';
 # 3 party packges
 $env.nu_3pp = ($env.XDG_CONFIG_HOME | path join "nushell/3pp/");
 
-# dir bookmarks
-source "~/.config/nushell/3pp/nu-dir-bookmark/bookmark_for_dir.nu";
-
 # the templates dir
 if not ($env.HOME | path join ".templates" | path exists) { mkdir ($env.HOME | path join ".templates") };
 $env.TEMPLATES_DIR = ($env.HOME | path join ".templates");
