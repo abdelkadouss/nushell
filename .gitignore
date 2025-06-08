@@ -3,6 +3,7 @@
 
 # plugins
 /plugins/bin/*
+/plugins.toml
 
 # history
 /history.txt

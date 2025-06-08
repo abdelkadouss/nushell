@@ -1,7 +1,0 @@
-[bins]
-nu_plugin_clipboard = "/Users/abdelkdous/.config/nushell/plugins/bin/nu_plugin_clipboard"
-nu_plugin_audio_hook = "/Users/abdelkdous/.config/nushell/plugins/bin/nu_plugin_audio_hook"
-nu_plugin_emoji = "/Users/abdelkdous/.config/nushell/plugins/bin/nu_plugin_emoji"
-nu_plugin_net = "/Users/abdelkdous/.config/nushell/plugins/bin/nu_plugin_net"
-nu_plugin_highlight = "/Users/abdelkdous/.cargo/bin/nu_plugin_highlight"
-nu_plugin_nupsql = "/Users/abdelkdous/.config/nushell/plugins/bin/nu_plugin_nupsql"
