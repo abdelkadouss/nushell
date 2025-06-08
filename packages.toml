@@ -1,0 +1,6 @@
+[packages]
+nu_plugin_clipboard = "FMotalleb/nu_plugin_clipboard"
+nu_plugin_audio_hook = "FMotalleb/nu_plugin_audio_hook"
+nu_plugin_emoji = "fdncred/nu_plugin_emoji"
+nu_plugin_net = "fennewald/nu_plugin_net"
+nu_plugin_nupsql = "HertelP/nu_plugin_nupsql"
