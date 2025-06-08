@@ -1,11 +1,11 @@
 use "t.nu";
 
-def animals [] { (ls $env.TEMPLATES_DIR | where name =~ ".nu" | merge (ls $env.TEMPLATES_DIR | where name =~ ".nuon") | get name | each {|e| $e | path parse | get stem }) }
+def templates [] { (ls $env.TEMPLATES_DIR | where name =~ ".nu" | merge (ls $env.TEMPLATES_DIR | where name =~ ".nuon") | get name | each {|e| $e | path parse | get stem }) }
 
 const UNACCEPTED_NAME = "lib";
 
-# make new project realy quick in Chaa Allah.
-export def main [name: string@animals] {
+# make new a project (or some thing) realy quick in Chaa Allah.
+export def main [name: string@templates] {
   if ($name == $UNACCEPTED_NAME) { print $"(ansi red_bold)ERR: (ansi reset)Can't use name (ansi underline)'($UNACCEPTED_NAME)'(ansi reset) as template name!"; return; };
 
   let base = ( $env.TEMPLATES_DIR );
