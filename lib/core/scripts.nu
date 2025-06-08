@@ -40,3 +40,9 @@ use nupm *;
 
 # self http post 
 use self_host *;
+
+# web search
+use web_search.nu *;
+
+# fzf
+use fzf.nu *;
