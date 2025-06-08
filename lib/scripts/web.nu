@@ -1,4 +1,4 @@
-def web_search [url: string, search: string] {
+export def web_search [url: string, search: string] {
   let opts = ($search | split row " ");
   let bin = $env.BROWSER;
   let args = '';
@@ -8,11 +8,11 @@ def web_search [url: string, search: string] {
   ^$bin $args $full_url;
 }
 
-def youtube [search: string] {
+export def youtube [search: string] {
   let url = "https://www.youtube.com/results?search_query=";
   web_search $url $search;
 }
-def ddg [search: string] {
+export def ddg [search: string] {
   let url = "https://duckduckgo.com/?q=";
   web_search $url $search;
 }
