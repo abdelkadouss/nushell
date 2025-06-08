@@ -1,3 +1,8 @@
-3pp
+# os
+.DS_Store
+
+# plugins
 /plugins/bin/*
+
+# history
 /history.txt
