@@ -42,7 +42,7 @@ use nupm *;
 use self_host *;
 
 # web search
-use web.nu *;
+use web_search.nu *;
 
 # fzf
 use fzf.nu *;

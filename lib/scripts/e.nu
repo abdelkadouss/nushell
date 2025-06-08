@@ -3,7 +3,19 @@ export def main [
   name: string='',
   files: string=''
   --new(-n)
+  --encrypted-edit(-e)
 ] {
+  if $encrypted_edit {
+    let $file = ($name | path basename);
+    mkdir /tmp/nvim/;
+    let $encripted_file = (["/tmp/nvim/", $file, ".pgp"] | str join);
+    open $name | save -f $encripted_file;
+    ^$env.EDITOR $encripted_file;
+    mv $encripted_file $name;
+    rm -r /tmp/nvim/;
+    return;
+  };
+
   if ($name == "") {
     ^$"($env.EDITOR)";
     return;

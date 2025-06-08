@@ -1,6 +1,6 @@
 # config
-if not ( ($env.HOME | path join ".templates") | path exists ) {
-  mkdir ($env.HOME | path join ".templates");
+if not ( $env.config.plugins.new.templates_dir? | path exists ) {
+  mkdir $env.config.plugins.new.templates_dir?;
 }
 
 # starship

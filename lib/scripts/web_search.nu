@@ -1,4 +1,4 @@
-export def web_search [url: string, search: string] {
+export def www [url: string, search: string] {
   let opts = ($search | split row " ");
   let bin = $env.BROWSER;
   let args = '';
