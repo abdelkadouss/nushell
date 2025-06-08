@@ -63,7 +63,7 @@ let external_completer = {|spans|
 # }
 
 # ls colors
-$env.LS_COLORS = ((cat ~/.config/nushell/lib/assetes/ls-colors) | str trim)
+$env.LS_COLORS = ((cat ~/.config/nushell/lib/assets/ls-colors) | str trim)
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
