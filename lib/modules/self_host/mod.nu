@@ -1,7 +1,10 @@
 use "./data_path.nu" get_data_path;
 
+use "./state_manager.nu" "state add";
+
 export use "./start.nu" *;
 export use "./stop.nu" *;
+export use "./state_manager.nu" "self host list";
 
 export def "self host" [
   path: string,
@@ -17,6 +20,7 @@ export def "self host" [
       }
       help: $"give me a real path please."
     }
+
   };
 
   let data_path = (get_data_path);
@@ -26,20 +30,33 @@ export def "self host" [
 
   if ($path | path type | $in == file) {
     mkdir ($data_path | path join $app_name);
+
   };
+
   cp -r -p $path ($data_path | path join $app_name);
 
   let path = ($data_path | path join $app_name);
 
   if ($custom_host_script == "default") {
-    if ($env.config.plugins.self_host.use_colima? | is-not-empty) { colima start | ignore };
+    podman machine start | ignore;
     cd ($data_path | path join $app_name);
-    docker-compose -p $app_name up -d;
+    podman-compose -p $app_name up -d;
+
   } else {
     print $"(ansi green_bold)done thank's to Allah, now copping the custom host script.(ansi reset)"
-    mkdir ($data_path | path join ".self_host_custom_host_script" | path join $app_name);
-    cp -r -p $custom_host_script ($data_path | path join ".self_host_custom_host_script" | path join $app_name);
+
+    mkdir (
+      $data_path
+      | path join ".self_host_custom_host_script"
+      | path join $app_name
+    );
+    cp -r -p $custom_host_script (
+      $data_path
+      | path join ".self_host_custom_host_script"
+      | path join $app_name
+    );
     cd ($data_path | path join $app_name);
+
     export-env {
       nu (
         [
@@ -50,7 +67,11 @@ export def "self host" [
         ] | path join
       ) start
     };
+
+    state add $app_name;
+
     print $"(ansi green_bold)done thank's to Allah, the app now should be up and running.(ansi reset)"
+
   };
 
   let apps = (
@@ -68,9 +89,13 @@ export def "self host" [
     }
   );
 
-  open ($data_path | path join "apps.toml")
+  open (
+    $data_path
+    | path join "apps.toml"
+  )
   | upsert apps $apps
   | save -f ($data_path | path join "apps.toml");
+
   print $"(ansi green_bold)done ✨🌼, thank's to Allah(ansi reset)."
 
 };
