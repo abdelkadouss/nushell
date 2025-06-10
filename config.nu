@@ -200,13 +200,19 @@ $env.config = {
       theme: ansi
     },
     nupm: {
-      NUPM_PACKAGE_DECLARATION_FILE_PATH: ($env.NU_CONFIG_DIR | path join "packages.toml")
-      NUPM_BIN_DECLARATION_FILE_PATH: ($env.NU_CONFIG_DIR | path join "plugins.toml")
-      NUPM_DIST_PATH: ($env.NU_CONFIG_DIR | path join "plugins")
+      NUPM_PACKAGE_DECLARATION_FILE_PATH: (
+        $env.NU_CONFIG_DIR
+        | path join "packages.toml"
+      ),
+      NUPM_BIN_DECLARATION_FILE_PATH: (
+        $env.NU_CONFIG_DIR
+        | path join "plugins.toml"
+      ),
+      NUPM_DIST_PATH: ($env.NU_CONFIG_DIR | path join "plugins"),
+      NUPM_HOME: ($env.XDG_DATA_HOME | path join "nupm"),
     },
     self_host: {
       data_path: ($env.XDG_DATA_HOME | path join "self_host"),
-      use_colima: true
       templates_path: ([$env.NU_CONFIG_DIR, "modules", "self_host", templates] | path join)
     },
     git: {
@@ -459,6 +465,7 @@ source ~/.config/nushell/lib/core/pre_source.nu;
 source ~/.config/nushell/lib/core/source.nu;
 source ~/.config/nushell/lib/core/alias.nu;
 source ~/.config/nushell/lib/core/scripts.nu;
+source ~/.config/nushell/lib/core/after_load_config_env.nu;
 
 # nupm
 source ~/.config/nushell/lib/modules/nupm/load.nu;

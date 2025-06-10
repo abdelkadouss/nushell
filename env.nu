@@ -8,10 +8,6 @@ $env.XDG_CONFIG_HOME = ($env.HOME | path join ".config");
 $env.XDG_DATA_HOME = ($env.HOME | path join ".local/share");
 # nu
 $env.NU_CONFIG_DIR = ($env.XDG_CONFIG_HOME | path join "nushell");
-# nupm
-$env.NUPM_HOME = ($env.XDG_DATA_HOME | path join "nupm");
-$env.NUPM_PACKAGE_DECLARATION_FILE_PATH = ($env.NU_CONFIG_DIR | path join "packages.toml");
-# $env.NUPM_DIST_PATH = 
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
@@ -144,5 +140,24 @@ $env.GIT_TEMPLATE_DIR = ($env.XDG_CONFIG_HOME | path join "git");
 $env.STCONFDIR = ($env.HOME | path join ".config/syncthing");
 $env.STDATADIR = ($env.HOME | path join ".local/share/syncthing");
 
-# path
-source ~/.config/nushell/lib/core/path.nu
+# PATH ===#
+source ~/.config/nushell/lib/core/path.nu;
+#===#
+
+#>note: source after path to get the bin in the scope in chaa'Allah
+
+# podman
+$env.DOCKER_HOST = (
+  (
+    podman machine inspect
+    | from json
+    | get ConnectionInfo
+    | get PodmanSocket
+    | get path
+    | first
+    | {
+        scheme: "unix",
+        host: $in
+      } | url join 
+  ) | default 'no-podman-machine-,-help:-run-podman-machine-init'
+);

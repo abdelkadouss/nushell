@@ -11,7 +11,7 @@ let install = [
   ($env.HOME | path join ".local/bin"),
   '/nix/var/nix/profiles/default/bin',
   '/opt/homebrew/bin',
-  ($env.HOME) | path join "bin";
+  (($env.HOME) | path join "bin")
 ];
 
 let go = [
@@ -30,16 +30,12 @@ let llvm = [
   '/opt/homebrew/opt/llvm/bin'
 ];
 
-let nupm = [
-  ($env.NUPM_HOME | path join "scripts")
-];
-
 let console_ninja = [
   ($env.HOME | path join ".console-ninja/.bin")
 ];
 
 let zen_macos = [
-  "/Applications/Zen.app/Contents/MacOS";
+  "/Applications/Zen.app/Contents/MacOS"
 ];
 
 let qview_macos = [
@@ -71,7 +67,6 @@ let path_groups = [
   $bun,
   $cargo,
   $llvm,
-  $nupm,
   $console_ninja,
   $zen_macos,
   $qview_macos,
