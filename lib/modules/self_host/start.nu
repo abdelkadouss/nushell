@@ -2,6 +2,10 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
+use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
+
+alias run = run_bin_if_in_path;
+
 export def apps [] {
   let data_path = (get_data_path);
   (
@@ -13,6 +17,7 @@ export def apps [] {
 };
 
 export def "self host start" [app_name: string@apps] {
+  make_sure_bin_in_the_path [ "podman", "podman-compose" ];
 
   let data_path = (get_data_path);
 
@@ -52,8 +57,8 @@ export def "self host start" [app_name: string@apps] {
   );
 
   if ($app_type == "default") {
-    podman machine start | ignore;
-    podman-compose -p $app_name up -d;
+    run podman machine start | ignore;
+    run podman-compose -p $app_name up -d;
 
   } else {
     export-env {

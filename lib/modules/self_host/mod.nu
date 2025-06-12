@@ -2,6 +2,10 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
+use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
+
+alias run = run_bin_if_in_path;
+
 export use "./start.nu" *;
 export use "./stop.nu" *;
 export use "./state_manager.nu" "self host list";
@@ -11,6 +15,8 @@ export def "self host" [
   app_name: string,
   --custom-host-script(-c): string = "default",
 ] {
+  make_sure_bin_in_the_path [ "podman", "podman-compose" ];
+
   if not ($path | path exists) {
     error make {
       msg: $"the path '($path)' does not exist."
@@ -38,9 +44,9 @@ export def "self host" [
   let path = ($data_path | path join $app_name);
 
   if ($custom_host_script == "default") {
-    podman machine start | ignore;
+    run podman machine start | ignore;
     cd ($data_path | path join $app_name);
-    podman-compose -p $app_name up -d;
+    run podman-compose -p $app_name up -d;
 
   } else {
     print $"(ansi green_bold)done thank's to Allah, now copping the custom host script.(ansi reset)"

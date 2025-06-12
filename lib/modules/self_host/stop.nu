@@ -2,6 +2,10 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state delete";
 
+use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
+
+alias run = run_bin_if_in_path;
+
 export def apps [] {
   let data_path = (get_data_path);
   (
@@ -20,6 +24,8 @@ export def "self host stop" [
   app_name: string@apps ,
   --stop-machine(-m) = false
   ] {
+
+  make_sure_bin_in_the_path [ "podman", "podman-compose" ];
 
   let data_path = (get_data_path);
 
@@ -62,7 +68,7 @@ export def "self host stop" [
     cd $app_path;
 
     if ($app_type == "default") {
-      podman-compose -p $app_name down;
+      run podman-compose -p $app_name down;
 
     } else {
       export-env {
@@ -76,7 +82,7 @@ export def "self host stop" [
 
     };
 
-    if $stop_machine { podman machine stop | ignore };
+    if $stop_machine { run podman machine stop | ignore };
 
     state delete $app_name;
 
