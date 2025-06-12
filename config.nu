@@ -33,27 +33,29 @@ let zoxide_completer = {|spans|
 
 # This completer will use carapace by default
 let external_completer = {|spans|
-    let expanded_alias = scope aliases
-    | where name == $spans.0
-    | get -i 0.expansion
+  let expanded_alias = scope aliases
+  | where name == $spans.0
+  | get -i 0.expansion
 
-    let spans = if $expanded_alias != null {
-        $spans
-        | skip 1
-        | prepend ($expanded_alias | split row ' ' | take 1)
-    } else {
-        $spans
-    }
+  let spans = if $expanded_alias != null {
+    $spans
+    | skip 1
+    | prepend ($expanded_alias | split row ' ' | take 1)
+  } else {
+      $spans
+  }
 
-    match $spans.0 {
-        # carapace completions are incorrect for nu
-        nu => $fish_completer
-        # carapace doesn't have completions for asdf
-        asdf => $fish_completer
-        # use zoxide completions for zoxide commands
-        __zoxide_z | __zoxide_zi | cd => $zoxide_completer
-        _ => $carapace_completer
-    } | do $in $spans
+  match $spans.0 {
+    # carapace completions are incorrect for nu
+    nu => $fish_completer
+    # carapace doesn't have completions for asdf
+    asdf => $fish_completer
+    # and doesn't have completions for mise
+    mise => $fish_completer
+    # use zoxide completions for zoxide commands
+    __zoxide_z | __zoxide_zi | cd => $zoxide_completer
+    _ => $carapace_completer
+  } | do $in $spans
 }
 
 
@@ -461,11 +463,11 @@ $env.PROMPT_MULTILINE_INDICATOR = {|| "::: " }
 # $env.TRANSIENT_PROMPT_MULTILINE_INDICATOR = {|| "" }
 # $env.TRANSIENT_PROMPT_COMMAND_RIGHT = {|| "" }
 
-source ~/.config/nushell/lib/core/pre_source.nu;
+# source ~/.config/nushell/lib/core/pre_source.nu;
 source ~/.config/nushell/lib/core/source.nu;
 source ~/.config/nushell/lib/core/alias.nu;
 source ~/.config/nushell/lib/core/scripts.nu;
-source ~/.config/nushell/lib/core/after_load_config_env.nu;
+source ~/.config/nushell/lib/core/hooks/after_load_config_env.nu;
 
 # nupm
 source ~/.config/nushell/lib/modules/nupm/load.nu;

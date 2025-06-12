@@ -58,6 +58,12 @@ let nvim_mason = [
   ($env.HOME | path join ".local/share/nvim/mason/bin")
 ]
 
+# proto
+let proto = [
+  ($env.PROTO_HOME | path join bin)
+  ($env.PROTO_HOME | path join shims)
+];
+
 # passing to the path #######
 let path_groups = [
   $android,
@@ -70,8 +76,9 @@ let path_groups = [
   $console_ninja,
   $zen_macos,
   $qview_macos,
-  $obsidian_macos
-  $nvim_mason
+  $obsidian_macos,
+  $nvim_mason,
+  $proto
 ];
 
 for path in ($path_groups | flatten) {

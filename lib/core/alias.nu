@@ -16,10 +16,7 @@ alias l = ls -a;
 alias y = yazi;
 
 # lazygit
-alias lz = lazygit
+alias lz = lazygit;
 
 # zellij
-alias m = zellij
-
-# qView
-# alias qv = /Applications/qView.app/Contents/MacOS/qView
+alias m = zellij;

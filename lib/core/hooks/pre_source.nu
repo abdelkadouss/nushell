@@ -1,8 +1,3 @@
-# config
-if not ( $env.config.plugins.new.templates_dir? | path exists ) {
-  mkdir $env.config.plugins.new.templates_dir?;
-}
-
 # starship
 if not ("~/.cache/starship/init.nu" | path exists) {
   mkdir ~/.cache/starship;
@@ -20,6 +15,49 @@ if not ("~/.cache/carapace/init.nu" | path exists) {
   carapace _carapace nushell | save --force ~/.cache/carapace/init.nu;
 };
 
+# mise
+if not (
+  (
+    [
+      $env.NU_CONFIG_DIR,
+      "plugins",
+      "scripts"
+      ".mise.nu"
+    ] | path join
+  ) | path exists
+) {
+  mise activate nu
+  | save -f (
+    [
+      $env.NU_CONFIG_DIR,
+      "plugins",
+      "scripts",
+      ".mise.nu"
+    ] | path join
+  );
+
+};
+
+if not (
+  [
+    $env.NU_CONFIG_DIR,
+    "plugins",
+    "scripts",
+    "proto.nu"
+  ] | path join
+  | path exists
+) {
+  proto activate nu
+  | save -f (
+    [
+      $env.NU_CONFIG_DIR,
+      "plugins",
+      "scripts",
+      ".proto.nu"
+    ] | path join
+  );
+
+};
 
 # atuin
 # if not ("~/.local/share/atuin/init.nu" | path exists) {
