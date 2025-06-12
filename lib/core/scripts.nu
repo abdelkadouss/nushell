@@ -44,5 +44,8 @@ use self_host *;
 # web search
 use web_search.nu *;
 
+# dm
+use dm *;
+
 # fzf
 use fzf.nu *;
