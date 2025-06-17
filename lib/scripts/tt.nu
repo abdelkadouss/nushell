@@ -1,9 +1,13 @@
+use ../shared/bin_utils.nu [make_sure_bin_in_the_path, run_bin_if_in_path];
+
+# translate text
 export def main [
   text: string,
   target: string = "ar"
   --reverse-chars(-r)
   --reverse-words(-w)
 ] {
+  make_sure_bin_in_the_path ["libretranslate"];
 
   let body = {
     q: $text,

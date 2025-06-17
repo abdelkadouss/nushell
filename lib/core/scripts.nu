@@ -1,9 +1,6 @@
 # quick edit
 use e.nu
 
-# background tasks
-use btask.nu
-
 # share dir
 use shdir.nu
 
@@ -19,12 +16,6 @@ use tt.nu;
 
 # table tree.
 use ttree.nu;
-
-# nateve open cmd.
-use o.nu;
-
-# better markdown preview.
-use premd.nu;
 
 # super touch.
 use t.nu;

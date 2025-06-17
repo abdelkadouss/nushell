@@ -1,3 +1,4 @@
+# supper touch
 export def main [input] {
   if not ($input | describe | str starts-with "record") { arrays $input; return; };
   let $input = $input | transpose pathes content;

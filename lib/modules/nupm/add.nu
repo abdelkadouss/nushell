@@ -35,15 +35,13 @@ export def "nupm add" [ repo: string ] {
       | path join "plugins.toml"
     )
   );
+  if not ($bin_declaration_file_path | path exists) {
+    "[bins]" | save -f $bin_declaration_file_path;
+  };
 
   if not (
     (
       $package_declaration_file_path
-      | path exists
-    )
-    or
-    (
-      $bin_declaration_file_path
       | path exists
     )
   ) {
