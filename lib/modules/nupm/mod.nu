@@ -1,4 +1,4 @@
-export use add.nu *
+export use add *
 export use rebuild.nu * 
 export use list.nu * 
 export use remove.nu *
