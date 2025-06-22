@@ -78,7 +78,7 @@ let path_groups = [
   $qview_macos,
   $obsidian_macos,
   $nvim_mason,
-  $proto
+  # $proto
 ];
 
 for path in ($path_groups | flatten) {

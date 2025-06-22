@@ -31,12 +31,14 @@ $env.DOCKER_HOST = (
   ) | default 'no-podman-machine-,-help:-run-podman-machine-init'
 );
 
-$env.PROTO_VERSION = (
-  soft_run_bin_if_in_path 0
-  proto --version
-  | split row " "
-  | get 1
-);
+$env.CONTAINER_HOST = $env.DOCKER_HOST;
+
+# $env.PROTO_VERSION = (
+#   soft_run_bin_if_in_path 0
+#   proto --version
+#   | split row " "
+#   | get 1
+# );
 
 # path
 
