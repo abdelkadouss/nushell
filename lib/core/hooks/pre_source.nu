@@ -1,7 +1,15 @@
 # starship
-if not ("~/.cache/starship/init.nu" | path exists) {
-  mkdir ~/.cache/starship;
-  starship init nu | save -f ~/.cache/starship/init.nu;
+let starship_path = (
+  [
+    $env.NU_CONFIG_DIR,
+    "plugins",
+    "scripts"
+    ".starship.nu"
+  ] | path join
+);
+if not ( $starship_path | path exists ) {
+  mkdir ( $starship_path | path dirname );
+  starship init nu | save -f $starship_path;
 }
 
 # zoxide
@@ -10,52 +18,44 @@ if not ("~/.config/nushell/plugins/.zoxide.nu" | path exists) {
 };
 
 # carapace
-if not ("~/.cache/carapace/init.nu" | path exists) {
-  mkdir ~/.cache/carapace;
-  carapace _carapace nushell | save --force ~/.cache/carapace/init.nu;
+let carapace_path = (
+  [
+    $env.NU_CONFIG_DIR,
+    "plugins",
+    "scripts"
+    ".carapace.nu"
+  ] | path join
+);
+if not ( $carapace_path | path exists ) {
+  mkdir ( $carapace_path | path dirname );
+  carapace _carapace nushell | save --force $carapace_path;
 };
 
 # mise
-if not (
-  (
-    [
-      $env.NU_CONFIG_DIR,
-      "plugins",
-      "scripts"
-      ".mise.nu"
-    ] | path join
-  ) | path exists
-) {
+let mise_path = (
+  [
+    $env.NU_CONFIG_DIR,
+    "plugins",
+    "scripts"
+    ".mise.nu"
+  ] | path join
+);
+if not ( $mise_path | path exists ) {
   mise activate nu
-  | save -f (
-    [
-      $env.NU_CONFIG_DIR,
-      "plugins",
-      "scripts",
-      ".mise.nu"
-    ] | path join
-  );
-
+  | save -f $mise_path;
 };
 
-if not (
+let proto_path = (
   [
     $env.NU_CONFIG_DIR,
     "plugins",
     "scripts",
     "proto.nu"
   ] | path join
-  | path exists
-) {
+);
+if not ( $proto_path | path exists ) {
   proto activate nu
-  | save -f (
-    [
-      $env.NU_CONFIG_DIR,
-      "plugins",
-      "scripts",
-      ".proto.nu"
-    ] | path join
-  );
+  | save -f $proto_path;
 
 };
 

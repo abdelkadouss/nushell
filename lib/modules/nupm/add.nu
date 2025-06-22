@@ -1,4 +1,10 @@
+use "../../shared/bin_utils.nu" [run_bin_if_in_path, make_sure_bin_in_the_path];
+
+alias exe = run_bin_if_in_path;
+
 export def "nupm add" [ repo: string ] {
+  make_sure_bin_in_the_path ["git", "cargo"];
+
   let data_path = (
     $env.config.plugins.nupm.NUPM_DATA_PATH?
     | default

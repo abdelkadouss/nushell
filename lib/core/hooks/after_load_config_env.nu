@@ -10,24 +10,26 @@ if not ( $env.config.plugins.new.templates_dir? | path exists ) {
 ## podman
 $env.DOCKER_HOST = (
   (
-    soft_run_bin_if_in_path 
-    '{
+    (
+      soft_run_bin_if_in_path 
+      '{
       ConnectionInfo: {
-        PodmanSocket: {
-          path: ["no-podman-machine-,-help:-run-podman-machine-init"]
-        }
+      PodmanSocket: {
+      path: ["no-podman-machine-,-help:-run-podman-machine-init"]
       }
-    }'
-    podman machine inspect
-    | from json
-    | get -i ConnectionInfo
-    | get -i PodmanSocket
-    | get -i path
-    | first
+      }
+      }'
+      podman machine inspect podman-machine-default
+      | from json
+      | get -i ConnectionInfo
+      | get -i PodmanSocket
+      | get -i Path
+      | first
+    )
     | {
-        scheme: "unix",
-        host: $in
-      } | url join 
+      scheme: "unix",
+      host: $in
+    } | url join 
   ) | default 'no-podman-machine-,-help:-run-podman-machine-init'
 );
 

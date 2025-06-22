@@ -15,7 +15,7 @@ export def --env "inject self host env" [] {
       | from json
       | get -i ConnectionInfo
       | get -i PodmanSocket
-      | get -i path
+      | get -i Path
       | first
       | {
         scheme: "unix",

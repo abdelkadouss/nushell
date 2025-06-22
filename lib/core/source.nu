@@ -1,4 +1,4 @@
-use ~/.cache/starship/init.nu;
+use ~/.config/nushell/plugins/scripts/.starship.nu;
 
 # integrations
 
@@ -11,7 +11,7 @@ source ~/.config/nushell/plugins/scripts/.zoxide.nu;
 # proto
 # source ~/.config/nushell/plugins/scripts/.proto.nu;
 
-source ~/.cache/carapace/init.nu;
+source ~/.config/nushell/plugins/scripts/.carapace.nu;
 
 # source ~/.local/share/atuin/init.nu;
 
