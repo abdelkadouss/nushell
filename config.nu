@@ -212,6 +212,7 @@ $env.config = {
       NUPM_HOME: ($env.XDG_DATA_HOME | path join "nupm"),
     },
     self_host: {
+      podman_machine: "self-host-machine",
       data_path: ($env.XDG_DATA_HOME | path join "self_host"),
       templates_path: ([$env.NU_CONFIG_DIR, "modules", "self_host", templates] | path join)
     },

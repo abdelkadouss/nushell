@@ -2,6 +2,8 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
+use "./env.nu" "inject self host env";
+
 use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
 
 alias run = run_bin_if_in_path;
@@ -16,6 +18,7 @@ export def "self host" [
   --custom-host-script(-c): string = "default",
 ] {
   make_sure_bin_in_the_path [ "podman", "podman-compose" ];
+  inject self host env;
 
   if not ($path | path exists) {
     error make {
@@ -44,7 +47,9 @@ export def "self host" [
   let path = ($data_path | path join $app_name);
 
   if ($custom_host_script == "default") {
-    run podman machine start | ignore;
+    try {
+      run podman machine start $env.config.plugins.self_host.podman_machine e+o> ignore;
+    } catch { ignore };
     cd ($data_path | path join $app_name);
     run podman-compose -p $app_name up -d;
 
