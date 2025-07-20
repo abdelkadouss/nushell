@@ -1,9 +1,9 @@
-use "../../shared/bin_utils.nu" [run_bin_if_in_path, make_sure_bin_in_the_path];
+use ../../shared/external ["external exist", "external run"];
 
 alias exe = run_bin_if_in_path;
 
 export def "nupm add" [ repo: string ] {
-  make_sure_bin_in_the_path ["git", "cargo"];
+  external exist --panic true ["git", "cargo"]
 
   let data_path = (
     $env.config.plugins.nupm.NUPM_DATA_PATH?
@@ -190,7 +190,7 @@ def bin_add [
   let dist_bin_path = ($dist_path | path join "bin");
   mkdir $dist_bin_path | ignore;
 
-  cargo build --release;
+  external run cargo build `--release`;
 
   if (
     (
@@ -204,6 +204,7 @@ def bin_add [
   };
 
   ln ("./target/release/" | path join $package_name) $dist_bin_path;
+  external run cargo clean;
 
   print $"done thank's to Allah, 'custom' is added to '($dist_bin_path)'"
   print $"add the plugin to load..."

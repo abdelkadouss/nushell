@@ -1,4 +1,8 @@
+use ../../shared/external ["external exist", "external run"];
+
 export def "nupm update" [] {
+  external exist --panic true ["git", "cargo"];
+
   let data_path = (
     $env.config.plugins.nupm.NUPM_DATA_PATH?
     | default
@@ -22,7 +26,7 @@ export def "nupm update" [] {
       | where type == "dir"
       | where name =~ ".git"
       | is-not-empty
-    ) { git pull };
+    ) { git pull -f };
 
     if (
       ls
@@ -31,7 +35,7 @@ export def "nupm update" [] {
       | is-not-empty
     ) {
       try {
-        cargo build --release;
+        external run cargo build `--release`;
 
         print $"(ansi green_bold)($app_name) build done ✨🌼, thank's to Allah(ansi reset)"
 
@@ -67,7 +71,7 @@ def bin_add [package_name: string] {
   );
   mkdir $dist_bin_path | ignore;
 
-  cargo build --release;
+  external run cargo build `--release`;
 
   if (
     ($dist_bin_path | path join $package_name)
@@ -78,6 +82,8 @@ def bin_add [package_name: string] {
   };
 
   ln ("./target/release/" | path join $package_name) $dist_bin_path;
+
+  external run cargo clean;
 
   print $"done thank's to Allah, 'custom' is added to '($dist_bin_path)'"
   print $"add the plugin to load..."
