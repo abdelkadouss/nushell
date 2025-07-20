@@ -1,6 +1,6 @@
 [submodule "lib/modules/dm"]
 	path = lib/modules/dm
-	url = uinx:///Users/abdelkdous/Coding/dm
+	url = git@github.com:abdelkadouss/dm.git
 [submodule "lib/modules/pkg"]
 	path = lib/modules/pkg
 	url = git@github.com:abdelkadouss/pkg.git
