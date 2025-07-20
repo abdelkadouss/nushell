@@ -7,11 +7,6 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 
-# External completer example
-# let carapace_completer = {|spans|
-#     carapace $spans.0 nushell ...$spans | from json
-# }
-
 let fish_completer = {|spans|
     fish --command $"complete '--do-complete=($spans | str join ' ')'"
     | from tsv --flexible --noheaders --no-infer
@@ -63,7 +58,10 @@ let external_completer = {|spans|
 # }
 
 # ls colors
-$env.LS_COLORS = ((cat ~/.config/nushell/lib/assets/ls-colors) | str trim)
+$env.LS_COLORS = (
+  ( open --raw ~/.config/nushell/lib/assets/ls-colors )
+  | str trim
+)
 
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
@@ -199,6 +197,9 @@ $env.config = {
       true_colors: true,
       theme: ansi
     },
+    e: {
+      alias_file: ( $env.home | path join ".config/nushell/lib/assets/cd_alaises.nuon" )
+    },
     nupm: {
       NUPM_PACKAGE_DECLARATION_FILE_PATH: (
         $env.NU_CONFIG_DIR
@@ -214,7 +215,14 @@ $env.config = {
     self_host: {
       podman_machine: "self-host-machine",
       data_path: ($env.XDG_DATA_HOME | path join "self_host"),
-      templates_path: ([$env.NU_CONFIG_DIR, "modules", "self_host", templates] | path join)
+      templates_path: (
+        [
+          $env.NU_CONFIG_DIR,
+          "modules",
+          "self_host",
+          templates
+        ] | path join
+      )
     },
     git: {
       remote: {
@@ -307,7 +315,27 @@ $env.config = {
         match_text: { attr: u }
         selected_match_text: { attr: ur }
       }
-    }
+    },
+    {
+      name: vars_menu
+      only_buffer_difference: true
+      marker: "$ "
+      type: {
+        layout: list
+        page_size: 10
+      }
+      style: {
+        text: green
+        selected_text: green_reverse
+        description_text: yellow
+      }
+      source: { |buffer, position|
+        scope variables
+        | where name =~ $buffer
+        | sort-by name
+        | each { |row| {value: $row.name description: $row.type} }
+      }
+    },
     {
       name: ide_completion_menu
       only_buffer_difference: false
@@ -325,12 +353,6 @@ $env.config = {
         max_description_width: 50
         max_description_height: 10
         description_offset: 1
-        # If true, the cursor pos will be corrected, so the suggestions match up with the typed text
-        #
-        # C:\> str
-        #      str join
-        #      str trim
-        #      str split
         correct_cursor_pos: false
       }
       style: {
@@ -375,35 +397,17 @@ $env.config = {
     }
   ]
 
-  keybindings: [
-    {
-      name: help_menu
-      modifier: control
-      keycode: char_f
-      mode: [emacs, vi_insert, vi_normal]
-      event: { send: menu name: help_menu }
-    }
-    {
-      name: next_page_menu
-      modifier: control
-      keycode: char_x
-      mode: [emacs, vi_insert, vi_normal]
-      event: { send: menupagenext }
-    }
-    # {
-    #     name: undo_or_previous_page_menu
-    #     modifier: control
-    #     keycode: char_z
-    #     mode: emacs
-    #     event: {
-    #         until: [
-    #             { send: menupageprevious }
-    #             { edit: undo }
-    #         ]
-    #     }
-    # }
-    #
-  ]
+  keybindings: (
+    open (
+      [
+        (
+          $nu.config-path
+          | path dirname
+        )
+        "lib/core/keymapping.nuon"
+      ] | path join
+    )
+  )
 }
 
 def create_left_prompt [] {

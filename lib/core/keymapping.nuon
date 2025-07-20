@@ -1,0 +1,120 @@
+[
+    {
+      name: help_menu
+      modifier: control
+      keycode: char_f
+      mode: [emacs, vi_insert, vi_normal]
+      event: { send: menu name: help_menu }
+    },
+    {
+      name: change_completion_algorithm
+      modifier: control
+      keycode: char_a
+      mode: vi_insert
+      event: [
+        {
+          send: ExecuteHostCommand,
+          cmd: "
+          $env.config.completions.algorithm = (
+            match $env.config.completions.algorithm {
+                'prefix' => 'fuzzy'
+                _ => 'prefix'
+              }
+          );
+          $env.PROMPT_INDICATOR_VI_INSERT = {||
+            match $env.config.completions.algorithm {
+              'fuzzy' => '🔭 '
+              _ => ': '
+
+            }
+          };
+          do $env.PROMPT_COMMAND;
+          "
+        },
+      ]
+    },
+    {
+      name: G
+      modifier: shift
+      keycode: char_g
+      mode: vi_normal
+      event: { edit: MoveToEnd }
+    },
+    {
+      name: gg
+      modifier: none
+      keycode: char_g
+      mode: vi_normal
+      event: { edit: MoveToStart }
+    },
+    {
+      name: zoxide_navigation
+      modifier: control
+      keycode: char_z
+      mode: vi_insert
+      event: [
+        { edit: MoveToLineStart },
+        {
+          edit: insertString,
+          value: "cdi "
+        },
+        { send: Enter }
+      ]
+    },
+    {
+      name: fzf
+      modifier: control
+      keycode: char_n # n for navigate
+      mode: [ vi_normal, vi_insert ]
+      event: [
+        {
+          send: ExecuteHostCommand,
+          cmd: "
+          fzf --height=10 --layout=reverse --border-label='cd' --walker=dir,hidden --preview='lstr -sGg -L 3 --icons {}'
+          | cd $in;
+          "
+        }
+      ]
+    },
+    {
+      name: vars_menu
+      modifier: control
+      keycode: char_v
+      mode: vi_insert
+      event: { send: menu name: vars_menu }
+    },
+    {
+      name: next_page_menu
+      modifier: control
+      keycode: char_x
+      mode: [emacs, vi_insert, vi_normal]
+      event: { send: menupagenext }
+    },
+    {
+      name: change_dir_with_fzf
+      modifier: CONTROL
+      keycode: Char_t
+      mode: vi_insert
+      event:[
+        { edit: Clear }
+        { edit: InsertString,
+          value: "cd (ls -a | where type == dir | each { |row| $row.name} | str join (char nl) | fzf | decode utf-8 | str trim)"
+
+        }
+        { send: Enter }
+      ]
+    },
+    # {
+    #     name: undo_or_previous_page_menu
+    #     modifier: control
+    #     keycode: char_z
+    #     mode: emacs
+    #     event: {
+    #         until: [
+    #             { send: menupageprevious }
+    #             { edit: undo }
+    #         ]
+    #     }
+    # }
+    #
+  ]
