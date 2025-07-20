@@ -19,7 +19,7 @@ export def apps [] {
 };
 
 export def "self host start" [app_name: string@apps] {
-  make_sure_bin_in_the_path [ "podman", "podman-compose" ];
+  make_sure_bin_in_the_path [ "colima", "docker-compose" ];
   inject self host env;
 
   let data_path = (get_data_path);
@@ -61,9 +61,9 @@ export def "self host start" [app_name: string@apps] {
 
   if ($app_type == "default") {
     try {
-      run podman machine start $env.config.plugins.self_host.podman_machine e+o> ignore;
+      run colima start | ignore;
     } catch { ignore };
-    run podman-compose -p $app_name up -d;
+    run docker-compose -p $app_name up -d;
 
   } else {
     export-env {

@@ -51,7 +51,7 @@ export def "state delete" [ app_name: string ] {
       | length
     ) < 1
   ) {
-    rm -rf $tmp_file;
+    rm -rfp $tmp_file;
 
   };
 

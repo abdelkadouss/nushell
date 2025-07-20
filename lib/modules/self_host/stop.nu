@@ -25,7 +25,7 @@ export def "self host stop" [
   --stop-machine(-m) = false
   ] {
 
-  make_sure_bin_in_the_path [ "podman", "podman-compose" ];
+  make_sure_bin_in_the_path [ "colima", "docker-compose" ];
 
   let data_path = (get_data_path);
 
@@ -68,7 +68,7 @@ export def "self host stop" [
     cd $app_path;
 
     if ($app_type == "default") {
-      run podman-compose -p $app_name down;
+      run docker-compose -p $app_name down;
 
     } else {
       export-env {
@@ -82,7 +82,7 @@ export def "self host stop" [
 
     };
 
-    if $stop_machine { run podman machine stop | ignore };
+    if $stop_machine { run colima stop | ignore };
 
     state delete $app_name;
 

@@ -17,7 +17,7 @@ export def "self host" [
   app_name: string,
   --custom-host-script(-c): string = "default",
 ] {
-  make_sure_bin_in_the_path [ "podman", "podman-compose" ];
+  make_sure_bin_in_the_path [ "colima", "docker-compose" ];
   inject self host env;
 
   if not ($path | path exists) {
@@ -48,10 +48,10 @@ export def "self host" [
 
   if ($custom_host_script == "default") {
     try {
-      run podman machine start $env.config.plugins.self_host.podman_machine e+o> ignore;
+      run colima start | ignore;
     } catch { ignore };
     cd ($data_path | path join $app_name);
-    run podman-compose -p $app_name up -d;
+    run docker-compose -p $app_name up -d;
 
   } else {
     print $"(ansi green_bold)done thank's to Allah, now copping the custom host script.(ansi reset)"
