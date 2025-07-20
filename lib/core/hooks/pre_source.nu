@@ -1,66 +1,56 @@
-# starship
-let starship_path = (
+let GEN_DIR = (
   [
     $env.NU_CONFIG_DIR,
     "plugins",
     "scripts"
-    ".starship.nu"
+    "gen"
   ] | path join
 );
-if not ( $starship_path | path exists ) {
-  mkdir ( $starship_path | path dirname );
-  starship init nu | save -f $starship_path;
-}
 
-# zoxide
-if not ("~/.config/nushell/plugins/.zoxide.nu" | path exists) {
-  zoxide init nushell | save -f ~/.config/nushell/plugins/scripts/.zoxide.nu;
-};
+mkdir $GEN_DIR;
 
-# carapace
-let carapace_path = (
-  [
-    $env.NU_CONFIG_DIR,
-    "plugins",
-    "scripts"
-    ".carapace.nu"
-  ] | path join
-);
-if not ( $carapace_path | path exists ) {
-  mkdir ( $carapace_path | path dirname );
-  carapace _carapace nushell | save --force $carapace_path;
-};
+let gen_scripts = [
+  {
+    name: "starship"
+    script: {|| starship init nu }
+  }
+  {
+    name: "zoxide"
+    script: {|| zoxide init nushell }
+  }
+  {
+    name: "carapace"
+    script: {|| carapace _carapace nushell }
+  }
+  # {
+  #   name: "mise"
+  #   script: {|| mise activate nu }
+  # }
+  # {
+  #   name: "proto"
+  #   script: {|| proto activate nu }
+  # }
+  # {
+  #   name: "atuin"
+  #   script: {||  atuin init nu }
+  # }
 
-# mise
-let mise_path = (
-  [
-    $env.NU_CONFIG_DIR,
-    "plugins",
-    "scripts"
-    ".mise.nu"
-  ] | path join
-);
-if not ( $mise_path | path exists ) {
-  mise activate nu
-  | save -f $mise_path;
-};
+]
 
-let proto_path = (
-  [
-    $env.NU_CONFIG_DIR,
-    "plugins",
-    "scripts",
-    "proto.nu"
-  ] | path join
-);
-if not ( $proto_path | path exists ) {
-  proto activate nu
-  | save -f $proto_path;
+for gen in $gen_scripts {
+  use std-rfc/path;
+
+  let script_path = (
+    [
+      $GEN_DIR
+      ( $gen.name | path with-extension "nu" )
+    ] | path join
+  )
+
+  if not ( $script_path | path exists ) {
+    do $gen.script
+    | save -f $script_path
+
+  }
 
 };
-
-# atuin
-# if not ("~/.local/share/atuin/init.nu" | path exists) {
-#   mkdir ~/.local/share/atuin/;
-#   atuin init nu | save ~/.local/share/atuin/init.nu;
-# };

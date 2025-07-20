@@ -1,4 +1,4 @@
-use ../shared/bin_utils.nu soft_run_bin_if_in_path;
+use ../shared/external *;
 
 # env
 
@@ -8,23 +8,36 @@ if not ( $env.config.plugins.new.templates_dir? | path exists ) {
 }
 
 ## podman
+let default_output = (
+  {
+    ConnectionInfo: {
+      PodmanSocket: {
+        Path: [ "no-podman-machine-,-help:-run-podman-machine-init" ]
+      }
+    }
+  } | to json
+);
+
 $env.DOCKER_HOST = (
   (
     (
-      soft_run_bin_if_in_path 
-      '{
-      ConnectionInfo: {
-      PodmanSocket: {
-      path: ["no-podman-machine-,-help:-run-podman-machine-init"]
+      if not (is-admin ) {
+        (
+          external run
+          --action-level warning
+          --stdout-message true  
+          --default-output $default_output
+          podman machine inspect podman-machine-default
+          | from json
+          | get -i ConnectionInfo
+          | get -i PodmanSocket
+          | get -i Path
+          | first
+        )
+      } else {
+        $default_output
+
       }
-      }
-      }'
-      podman machine inspect podman-machine-default
-      | from json
-      | get -i ConnectionInfo
-      | get -i PodmanSocket
-      | get -i Path
-      | first
     )
     | {
       scheme: "unix",
@@ -33,7 +46,9 @@ $env.DOCKER_HOST = (
   ) | default 'no-podman-machine-,-help:-run-podman-machine-init'
 );
 
-$env.CONTAINER_HOST = $env.DOCKER_HOST;
+hide default_output;
+
+$env.CONTAINER_HOST = $env.DOCKER_HOST?;
 
 # $env.PROTO_VERSION = (
 #   soft_run_bin_if_in_path 0
