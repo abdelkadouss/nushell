@@ -8,3 +8,6 @@
 
 # history
 /history.txt
+
+# gen scripts
+/plugins/scripts/gen/*
