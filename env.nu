@@ -65,7 +65,7 @@ $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
 
 # --- setup fzf theme ---
 
-$env.FZF_DEFAULT_OPTS = $"--color=fg:#cdd6f4,bg:#181825,hl:#94e2d5,fg+:#cdd6f4,bg+:#313244,hl+:#94e2d5,info:#f5c2e7,prompt:#f5e0dc,pointer:#f5e0dc,marker:#f5e0dc,spinner:#f5e0dc,header:#f5e0dc --preview 'bat --color=always {}'";
+$env.FZF_DEFAULT_OPTS = $"--border=rounded --color=fg:#cdd6f4,hl:#94e2d5,fg+:#cdd6f4,bg+:#313244,hl+:#94e2d5,info:#f5c2e7,prompt:#f5e0dc,pointer:#f5e0dc,marker:#f5e0dc,spinner:#f5e0dc,header:#f5e0dc --preview 'bat --color=always {}'";
 
 # bat
 $env.BAT_THEME = "Catppuccin Mocha";
@@ -117,6 +117,8 @@ $env.LD_LIBRARY_PATH = "/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107
 $env.LDFLAGS = "-L/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib";
 $env.CFLAGS = "-I/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/include";
 $env.DYLD_LIBRARY_PATH = $"($env.LIBRARY_PATH?):($env.DYLD_LIBRARY_PATH?)";
+# libarchive
+$env.CPATH = $"/opt/homebrew/opt/libarchive/bin:($env.CPATH?)";
 
 # adhan
 $env.ADHAN = $"($env.HOME)/.dotfiles/scripts/salat/resources/ressources_audio_Adhan - Ahmed Al-Nufais.mp3"
@@ -147,6 +149,34 @@ $env.PROTO_HOME = (
     "proto"
   ] | path join
 );
+
+# pkg
+$env.pkg = {
+  source_dir: (
+    [
+      $env.XDG_CONFIG_HOME,
+      "pkg",
+    ] | path join
+  ),
+};
+
+$env.pkg = {
+  ...$env.pkg,
+
+  bridges_set: (
+    [
+      $env.pkg.source_dir,
+      ".bridges"
+    ] | path join
+  )
+
+  target_dir: "/opt/pkg",
+
+  db_path: "/var/db/pkg/packages.db",
+
+  load_path: "/run/pkg"
+
+};
 
 # PATH ===#
 source ~/.config/nushell/lib/core/path.nu;
