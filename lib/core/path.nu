@@ -1,8 +1,12 @@
+# for isolation
+overlay new path;
+overlay use path;
+
 let android = [
-   ($env.ANDROID_SDK_ROOT | path join "cmdline-tools/latest/bin"),
-   ($env.ANDROID_HOME | path join "platform-tools"),
-   ($env.ANDROID_HOME | path join "emulator"),
-   ($env.ANDROID_HOME | path join "build-tools/34.0.0")
+  ($env.ANDROID_SDK_ROOT | path join "cmdline-tools/latest/bin"),
+  ($env.ANDROID_HOME | path join "platform-tools"),
+  ($env.ANDROID_HOME | path join "emulator"),
+  ($env.ANDROID_HOME | path join "build-tools/34.0.0")
 ];
 
 let install = [
@@ -15,7 +19,7 @@ let install = [
 ];
 
 let go = [
-  ($env.HOME | path join ".go/bin")
+  ($env.HOME | path join "go/bin")
 ];
 
 let deno = [
@@ -64,6 +68,14 @@ let proto = [
   ($env.PROTO_HOME | path join shims)
 ];
 
+let pkgs = [
+  "/run/pkg"
+];
+
+let brew = [
+  "/opt/homebrew/opt/libarchive/bin"
+];
+
 # passing to the path #######
 let path_groups = [
   $android,
@@ -78,11 +90,15 @@ let path_groups = [
   $qview_macos,
   $obsidian_macos,
   $nvim_mason,
+  $brew,
+  $pkgs,
   # $proto
 ];
 
 for path in ($path_groups | flatten) {
   if ($path | path exists) {
-    $env.path = ($env.path | prepend $path)
+    $env.path = ($env.path | prepend $path);
   }
-};
+}
+
+overlay hide path --keep-env [ PATH ];

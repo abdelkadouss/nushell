@@ -1,23 +1,19 @@
-use ~/.config/nushell/plugins/scripts/.starship.nu;
 
 # integrations
 
+## starship
+source ~/.config/nushell/plugins/scripts/gen/starship.nu;
+
 ## zoxide
-source ~/.config/nushell/plugins/scripts/.zoxide.nu;
+source ~/.config/nushell/plugins/scripts/gen/zoxide.nu;
+
+## carapace
+source ~/.config/nushell/plugins/scripts/gen/carapace.nu;
 
 ## mise
-# source ~/.config/nushell/plugins/scripts/.mise.nu;
+# source ~/.config/nushell/plugins/scripts/gen/mise.nu;
 
-# proto
-# source ~/.config/nushell/plugins/scripts/.proto.nu;
+## proto
+# source ~/.config/nushell/plugins/scripts/gen/proto.nu;
 
-source ~/.config/nushell/plugins/scripts/.carapace.nu;
-
-# source ~/.local/share/atuin/init.nu;
-
-
-# let bins = [
-#   "nu_plugin_highlight"
-#   "nu_plugin_emoji"
-# ]
-#
+# source ~/.config/nushell/plugins/scripts/gen/atuin.nu;
