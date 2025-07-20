@@ -9,9 +9,37 @@ export def "external run" [
   --stdlib(-s) = false,
   --default-output(-d): any = null
   --as-root(-r) = false,
+  --dont-wait-return-value-to-exit(-w) = false,
   ...args
 ] {
   let command = ( which $bin );
+
+  def run_bin [ bin:string, ...args ] {
+    if ( $bin | is-not-empty ) {
+      if $as_root {
+        if $dont_wait_return_value_to_exit {
+          sudo $bin ...$args;
+          return;
+
+        } else {
+          return ( sudo $bin ...$args )
+
+        }
+
+      };
+
+      if $dont_wait_return_value_to_exit {
+        ^$bin ...$args;
+        return;
+
+      } else {
+        return ( ^$bin ...$args )
+
+      }
+
+    };
+
+  }
 
   if ( $command | is-not-empty ) {
     let command_type = ( $command | get -i type );
@@ -28,43 +56,19 @@ export def "external run" [
             | get -i path
           );
 
-          if ( $bin | is-not-empty ) {
-            if $as_root {
-              return ( sudo $bin ...$args );
-
-            };
-
-            return ( ^$bin ...$args );
-
-          };
+          return ( run_bin $bins ...$args );
 
         },
         "custom" => {
           let bin = ( $command | get -i command | first );
 
-          if ( $bin | is-not-empty ) {
-            if $as_root {
-              return ( sudo $bin ...$args );
-
-            };
-
-            return ( ^$bin ...$args );
-
-          };
+          return ( run_bin $bin ...$args );
 
         },
         _ => {
-          let bin = ( $command | get -i path );
-          if ( $bin | is-not-empty ) {
-            let bin = ( $bin | first );
-            if $as_root {
-              return ( sudo $bin ...$args );
+          let bin = ( $command | get -i path | first );
 
-            };
-
-            return ( ^$bin ...$args );
-
-          };
+          return ( run_bin $bin ...$args );
 
         }
 
