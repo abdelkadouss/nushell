@@ -90,6 +90,10 @@ $env.config = {
     # abbreviated_row_count: 10 # limit data rows from top and bottom after reaching a set point
   }
 
+  filesize: {
+    unit: metric,
+  }
+
   error_style: "fancy" # "fancy" or "plain" for screen reader-friendly error messages
 
   # Whether an error message should be printed if an error of a certain kind is triggered.
@@ -140,11 +144,6 @@ $env.config = {
     }
     use_ls_colors: true # set this to true to enable file/path/directory completions using LS_COLORS
   }
-
-  # filesize: {
-  #     metric: true # true => KB, MB, GB (ISO standard), false => KiB, MiB, GiB (Windows standard)
-  #     format: "auto" # b, kb, kib, mb, mib, gb, gib, tb, tib, pb, pib, eb, eib, auto
-  # }
 
   cursor_shape: {
     emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
