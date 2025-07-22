@@ -45,6 +45,8 @@ let external_completer = {|spans|
     asdf => $fish_completer
     # and doesn't have completions for mise
     mise => $fish_completer
+    # and doesn't have completions for lnk
+    lnk => $fish_completer
     # use zoxide completions for zoxide commands
     __zoxide_z | __zoxide_zi | cd => $zoxide_completer
     _ => $carapace_completer
