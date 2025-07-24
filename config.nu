@@ -7,9 +7,33 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 
+def "read file" [
+  path
+  --raw(-r)
+] {
+  (
+    [
+      (
+        $nu.config-path
+        | path dirname
+      ),
+      $path
+    ] | path join
+  ) | (
+    if $raw {
+      open --raw $in
+
+    } else {
+      open $in
+
+    }
+
+  )
+}
+
 # ls colors
 $env.LS_COLORS = (
-  ( open --raw ~/.config/nushell/lib/assets/ls-colors )
+  ( read file --raw lib/assets/ls-colors )
   | str trim
 )
 
@@ -337,17 +361,8 @@ $env.config = {
     }
   ]
 
-  keybindings: (
-    open (
-      [
-        (
-          $nu.config-path
-          | path dirname
-        )
-        "lib/core/keymapping.nuon"
-      ] | path join
-    )
-  )
+  keybindings: ( read file "lib/core/keymapping.nuon" )
+
 }
 
 def create_left_prompt [] {
@@ -405,6 +420,9 @@ $env.PROMPT_MULTILINE_INDICATOR = {|| "::: " }
 # $env.TRANSIENT_PROMPT_INDICATOR_VI_NORMAL = {|| "" }
 # $env.TRANSIENT_PROMPT_MULTILINE_INDICATOR = {|| "" }
 # $env.TRANSIENT_PROMPT_COMMAND_RIGHT = {|| "" }
+
+# hide the dev commands
+hide "read file";
 
 # source ~/.config/nushell/lib/core/pre_source.nu;
 source ~/.config/nushell/lib/core/source.nu;

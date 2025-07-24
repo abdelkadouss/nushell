@@ -76,6 +76,10 @@ let brew = [
   "/opt/homebrew/opt/libarchive/bin"
 ];
 
+let doom = [
+  ($env.home | path join ".config/emacs/bin" )
+]
+
 # passing to the path #######
 let path_groups = [
   $android,
@@ -91,6 +95,7 @@ let path_groups = [
   $obsidian_macos,
   $nvim_mason,
   $brew,
+  $doom
   $pkgs,
   # $proto
 ];
