@@ -8,7 +8,7 @@ source ~/.config/nushell/plugins/scripts/gen/starship.nu;
 source ~/.config/nushell/plugins/scripts/gen/zoxide.nu;
 
 ## carapace
-source ~/.config/nushell/plugins/scripts/gen/carapace.nu;
+# source ~/.config/nushell/plugins/scripts/gen/carapace.nu;
 
 ## mise
 # source ~/.config/nushell/plugins/scripts/gen/mise.nu;

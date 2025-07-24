@@ -18,10 +18,10 @@ let gen_scripts = [
     name: "zoxide"
     script: {|| zoxide init nushell }
   }
-  {
-    name: "carapace"
-    script: {|| carapace _carapace nushell }
-  }
+  # {
+  #   name: "carapace" # cheak out ../../completion/carapace.nu
+  #   script: {|| carapace _carapace nushell }
+  # }
   # {
   #   name: "mise"
   #   script: {|| mise activate nu }
