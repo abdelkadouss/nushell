@@ -7,58 +7,6 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 
-let fish_completer = {|spans|
-    fish --command $"complete '--do-complete=($spans | str join ' ')'"
-    | from tsv --flexible --noheaders --no-infer
-    | rename value description
-    | update value {
-        if ($in | path exists) {$'"($in | str replace "\"" "\\\"" )"'} else {$in}
-    }
-}
-
-let carapace_completer = {|spans: list<string>|
-    carapace $spans.0 nushell ...$spans
-    | from json
-    | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
-}
-
-let zoxide_completer = {|spans|
-    $spans | skip 1 | zoxide query -l ...$in | lines | where {|x| $x != $env.PWD}
-}
-
-# This completer will use carapace by default
-let external_completer = {|spans|
-  let expanded_alias = scope aliases
-  | where name == $spans.0
-  | get -i 0.expansion
-
-  let spans = if $expanded_alias != null {
-    $spans
-    | skip 1
-    | prepend ($expanded_alias | split row ' ' | take 1)
-  } else {
-      $spans
-  }
-
-  match $spans.0 {
-    # carapace doesn't have completions for asdf
-    asdf => $fish_completer
-    # and doesn't have completions for mise
-    mise => $fish_completer
-    # and doesn't have completions for lnk
-    lnk => $fish_completer
-    # use zoxide completions for zoxide commands
-    __zoxide_z | __zoxide_zi | cd => $zoxide_completer
-    _ => $carapace_completer
-  } | do $in $spans
-}
-
-
-# zoxide
-# let zoxide_completer = {|spans|
-#   $spans | skip 1 | zoxide query -l ...$in | lines | where {|x| $x != $env.PWD}
-# }
-
 # ls colors
 $env.LS_COLORS = (
   ( open --raw ~/.config/nushell/lib/assets/ls-colors )
@@ -133,20 +81,6 @@ $env.config = {
     isolation: false # only available with sqlite file_format. true enables history isolation, false disables it. true will allow the history to be isolated to the current session using up/down arrows. false will allow the history to be shared across all sessions.
   }
 
-  completions: {
-    case_sensitive: false # set to true to enable case-sensitive completions
-    quick: true    # set this to false to prevent auto-selecting completions when only one remains
-    partial: true    # set this to false to prevent partial filling of the prompt
-    algorithm: "prefix"    # prefix or fuzzy
-    sort: "smart" # "smart" (alphabetical for prefix matching, fuzzy score for fuzzy matching) or "alphabetical"
-    external: {
-      enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
-      max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-      completer: $external_completer # check 'carapace_completer' above as an example
-    }
-    use_ls_colors: true # set this to true to enable file/path/directory completions using LS_COLORS
-  }
-
   cursor_shape: {
     emacs: line # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
     vi_insert: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (block is the default)
@@ -199,7 +133,12 @@ $env.config = {
       theme: ansi
     },
     e: {
-      alias_file: ( $env.home | path join ".config/nushell/lib/assets/cd_alaises.nuon" )
+      alias: {
+        shell: ~/.config/nushell/config.nu
+        env: ~/.config/nushell/env.nu
+        pkg: ~/.config/pkg
+        keys: ~/.config/nushell/lib/core/keymapping.nuon
+      }
     },
     nupm: {
       NUPM_PACKAGE_DECLARATION_FILE_PATH: (
@@ -470,8 +409,11 @@ $env.PROMPT_MULTILINE_INDICATOR = {|| "::: " }
 # source ~/.config/nushell/lib/core/pre_source.nu;
 source ~/.config/nushell/lib/core/source.nu;
 source ~/.config/nushell/lib/core/alias.nu;
-source ~/.config/nushell/lib/core/scripts.nu;
+source ~/.config/nushell/lib/core/scope.nu;
 source ~/.config/nushell/lib/core/hooks/after_load_config_env.nu;
+
+# completions
+source-env ~/.config/nushell/lib/completion/mod.nu;
 
 # nupm
 source ~/.config/nushell/lib/modules/nupm/load.nu;

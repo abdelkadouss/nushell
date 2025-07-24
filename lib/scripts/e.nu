@@ -175,16 +175,13 @@ export def --wrapped main [
     );
 
   } else if (
-    $env.config.plugins.e?.alias_file?
-    | is-not-empty
-  ) and (
-    open $env.config.plugins.e?.alias_file?
+    $env.config.plugins.e?.alias?
     | get -i $files.0
     | is-not-empty
   ) {
     use editor;
 
-    open $env.config.plugins.e.alias_file
+    $env.config.plugins.e.alias
     | get -i $files.0
     | path expand
     | (
