@@ -13,7 +13,7 @@ source ~/.config/nushell/lib/core/scope.nu;
 source ~/.config/nushell/lib/core/hooks/after_load_config_env.nu;
 
 # completions
-source-env ~/.config/nushell/lib/completion/mod.nu;
+source ~/.config/nushell/lib/completion/mod.nu;
 
 # nupm
 source ~/.config/nushell/lib/modules/nupm/load.nu;

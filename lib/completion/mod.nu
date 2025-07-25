@@ -1,3 +1,6 @@
+overlay new completion;
+overlay use completion;
+
 use fish.nu;
 use carapace.nu;
 use zoxide.nu;
@@ -44,3 +47,5 @@ $env.config.completions = {
     completer: $external_completer
   }
 }
+
+overlay hide completion;

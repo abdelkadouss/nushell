@@ -3,6 +3,10 @@
 # And here is the theme collection
 # https://github.com/nushell/nu_scripts/tree/main/themes
 
+# to hide the theme commands from the global scope
+overlay new theme;
+overlay use theme;
+
 source installer.nu;
 
 use update_terminal.nu "update terminal";
@@ -22,3 +26,5 @@ $env.LS_COLORS = (
   ( read file --raw lib/assets/ls-colors )
   | str trim
 )
+
+overlay hide theme;
