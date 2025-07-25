@@ -2,7 +2,7 @@ source plugin.nu;
 source hooks.nu;
 source prompt.nu;
 source menus.nu;
-source theme.nu;
+source theme/mod.nu;
 
 def "read file" [
   path
@@ -27,12 +27,6 @@ def "read file" [
 
   )
 }
-
-# ls colors
-$env.LS_COLORS = (
-  ( read file --raw lib/assets/ls-colors )
-  | str trim
-)
 
 $env.config = {
   ...( read file "lib/core/config/shell.nuon" ),

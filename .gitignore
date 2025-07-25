@@ -11,3 +11,4 @@
 
 # gen scripts
 /plugins/scripts/gen/*
+/plugins/scripts/themes/*

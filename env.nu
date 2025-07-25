@@ -27,10 +27,13 @@ $env.ENV_CONVERSIONS = {
 # Directories to search for scripts when calling source or use
 # The default for this is $nu.default-config-dir/scripts
 $env.NU_LIB_DIRS = [
-    ($env.NU_CONFIG_DIR | path join 'lib/scripts') # add <nushell-config-dir>/scripts
-    ($env.NU_CONFIG_DIR | path join 'lib/modules') # add <nushell-config-dir>/scripts
-    ($env.XDG_DATA_HOME | path join 'completions') # default home for nushell completions
-    # ($env.config.plugins.nupm.NUPM_DIST_PATH | path join "scripts")FIXME:
+  ( $env.NU_CONFIG_DIR | path join 'lib/scripts' ) # add <nushell-config-dir>/scripts
+  ( $env.NU_CONFIG_DIR | path join 'lib/modules' ) # add <nushell-config-dir>/scripts
+  ( $env.XDG_DATA_HOME | path join 'completions' ) # default home for nushell completions
+  # plugins scripts/modules
+  ( $env.NU_CONFIG_DIR | path join 'plugins/scripts' )
+  ( $env.NU_CONFIG_DIR | path join 'plugins/modules' )
+  # ($env.config.plugins.nupm.NUPM_DIST_PATH | path join "scripts")FIXME:
 ]
 
 # Directories to search for plugin binaries when calling register
