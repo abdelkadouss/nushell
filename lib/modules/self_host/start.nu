@@ -2,8 +2,6 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
-use "./env.nu" "inject self host env";
-
 use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
 
 alias run = run_bin_if_in_path;
@@ -20,7 +18,6 @@ export def apps [] {
 
 export def "self host start" [app_name: string@apps] {
   make_sure_bin_in_the_path [ "colima", "docker-compose" ];
-  inject self host env;
 
   let data_path = (get_data_path);
 

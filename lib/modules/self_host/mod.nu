@@ -2,8 +2,6 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
-use "./env.nu" "inject self host env";
-
 use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
 
 alias run = run_bin_if_in_path;
@@ -18,7 +16,6 @@ export def "self host" [
   --custom-host-script(-c): string = "default",
 ] {
   make_sure_bin_in_the_path [ "colima", "docker-compose" ];
-  inject self host env;
 
   if not ($path | path exists) {
     error make {
