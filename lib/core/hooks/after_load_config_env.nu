@@ -8,47 +8,47 @@ if not ( $env.config.plugins.new.templates_dir? | path exists ) {
 }
 
 ## podman
-let default_output = (
-  {
-    ConnectionInfo: {
-      PodmanSocket: {
-        Path: [ "no-podman-machine-,-help:-run-podman-machine-init" ]
-      }
-    }
-  } | to json
-);
+# let default_output = (
+#   {
+#     ConnectionInfo: {
+#       PodmanSocket: {
+#         Path: [ "no-podman-machine-,-help:-run-podman-machine-init" ]
+#       }
+#     }
+#   } | to json
+# );
 
-$env.DOCKER_HOST = (
-  (
-    (
-      if not (is-admin ) {
-        (
-          external run
-          --action-level warning
-          --stdout-message true  
-          --default-output $default_output
-          podman machine inspect podman-machine-default
-          | from json
-          | get -i ConnectionInfo
-          | get -i PodmanSocket
-          | get -i Path
-          | first
-        )
-      } else {
-        $default_output
+# $env.DOCKER_HOST = (
+#   (
+#     (
+#       if not (is-admin ) {
+#         (
+#           external run
+#           --action-level warning
+#           --stdout-message true  
+#           --default-output $default_output
+#           podman machine inspect podman-machine-default
+#           | from json
+#           | get -i ConnectionInfo
+#           | get -i PodmanSocket
+#           | get -i Path
+#           | first
+#         )
+#       } else {
+#         $default_output
 
-      }
-    )
-    | {
-      scheme: "unix",
-      host: $in
-    } | url join 
-  ) | default 'no-podman-machine-,-help:-run-podman-machine-init'
-);
+#       }
+#     )
+#     | {
+#       scheme: "unix",
+#       host: $in
+#     } | url join 
+#   ) | default 'no-podman-machine-,-help:-run-podman-machine-init'
+# );
 
-hide default_output;
+# hide default_output;
 
-$env.CONTAINER_HOST = $env.DOCKER_HOST?;
+# $env.CONTAINER_HOST = $env.DOCKER_HOST?;
 
 # $env.PROTO_VERSION = (
 #   soft_run_bin_if_in_path 0
