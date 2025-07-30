@@ -7,8 +7,6 @@
 overlay new theme;
 overlay use theme;
 
-source installer.nu;
-
 use update_terminal.nu "update terminal";
 use themes/catppuccin_mocha.nu;
 
