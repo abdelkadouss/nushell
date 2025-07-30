@@ -29,6 +29,7 @@ let external_completer = {|spans|
     mise => {|spans| fish $spans }
     # and doesn't have completions for lnk
     lnk => {|spans| fish $spans }
+    colima => {|spans| fish $spans }
     # use zoxide completions for zoxide commands
     # __zoxide_z | __zoxide_zi | cd => {|spans| zoxide $spans }
     _ => {|spans| carapace $spans }

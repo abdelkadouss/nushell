@@ -45,7 +45,7 @@ export def "self host" [
 
   if ($custom_host_script == "default") {
     try {
-      run colima start | ignore;
+      run colima start --vm-type qemu | ignore;
     } catch { ignore };
     cd ($data_path | path join $app_name);
     run docker-compose -p $app_name up -d;

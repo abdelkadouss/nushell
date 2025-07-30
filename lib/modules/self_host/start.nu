@@ -58,7 +58,7 @@ export def "self host start" [app_name: string@apps] {
 
   if ($app_type == "default") {
     try {
-      run colima start | ignore;
+      run colima start --vm-type qemu | ignore;
     } catch { ignore };
     run docker-compose -p $app_name up -d;
 
