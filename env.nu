@@ -6,6 +6,8 @@
 $env.XDG_CONFIG_HOME = ($env.HOME | path join ".config");
 # data dir
 $env.XDG_DATA_HOME = ($env.HOME | path join ".local/share");
+# cache dir
+$env.XDG_CACHE_HOME = ($env.HOME | path join ".cache");
 # nu
 $env.NU_CONFIG_DIR = ($env.XDG_CONFIG_HOME | path join "nushell");
 
@@ -187,5 +189,6 @@ source ~/.config/nushell/lib/core/path.nu;
 
 #>note: source after path to get the bin in the scope in chaa'Allah
 
-# pre source hook
+# hooks
 nu ~/.config/nushell/lib/core/hooks/pre_source.nu;
+nu ~/.config/nushell/lib/core/config/theme/installer.nu;
