@@ -1,52 +1,49 @@
-use add.nu "nupm add";
+use ../../shared/environment.nu *;
+
+use declare.nu 'plugin undeclare';
+use add.nu 'nupm add';
+
+use app_config.nu *;
 
 export def "nupm rebuild" [] {
-  if ( $env.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH? | is-empty ) {
-    error make {
-      msg: $"NUPM_PACKAGE_DECLARATION_FILE_PATH env var is not set"
-      label: {
-        text: "env var not set"
-        span: (metadata $env.config.plugins).span
-      }
+  config check;
 
-      help: "declare the NUPM_PACKAGE_DECLARATION_FILE_PATH env var first under the config.plugins.nupm record.\n that should point to package.toml file that contain {'package_name': 'package_repo'}"
+  let input_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH;
 
-    }
+  let plugins_declaration_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
 
-  }
+  let plugins_declaration = (
+    open $plugins_declaration_file
+    | get -o packages
+  )
 
-  if not ( $env.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH | path exists ) {
-    error make {
-      msg: $"NUPM_PACKAGE_DECLARATION_FILE_PATH env var is pointing to a non existing file '($env.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH)'"
-      label: {
-        text: "file not found"
-        span: (metadata $env.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH).span
-      }
-
-      help: "make sure the NUPM_PACKAGE_DECLARATION_FILE_PATH points to a valid package.toml file that contain {'package_name': 'package_repo'}"
-
-    }
-
-  }
-
-  let data_dir = (
-    [
-      $env.XDG_DATA_HOME,
-      "nupm",
-      "packages"
-    ]
-    | path join
-  );
-  mkdir $data_dir;
-
-  for package in (
-    open $env.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH
-    | get packages
-    | transpose name repo
+  for plugin in (
+    open $input_file
+    | get -o packages
+    | transpose name info
   ) {
-    rm -rf ( [ $data_dir, $package.name ] | path join );
-    nupm add $package.repo;
+    print $"(ansi bb) ($plugin.name): (ansi reset)";
+
+    print $"\t🗑️:";
+    try {
+      rm -rfp $plugins_declaration
+      | get $plugin.info.pkg_type
+      | get $plugin.name
+      | rm -rfp $in.path;
+
+      plugin undeclare $plugin.name $plugin.info.pkg_type;
+
+    }
+
+    print $"\t🚚📦:";
+    try {
+      nupm add $plugin.info.repo $plugin.info.type;
+      print $"Done, thank's to Allah 🌻";
+
+    }
 
   };
+
+  print $"(ansi gb) It's all done, thank's to Allah 🌻(ansi reset)";
 
 };

@@ -1,15 +1,29 @@
-# source this file in your config.nu
-if ( $env.config.plugins.nupm.NUPM_BIN_DECLARATION_FILE_PATH? | path exists ) {
-  for bin in (
-    open $env.config.plugins.nupm.NUPM_BIN_DECLARATION_FILE_PATH?
-    | get bins
-    | transpose name path
-  ) {
-    (
-      plugin add $bin.path
-    ) | ignore ;
+use ../../shared/environment.nu *;
 
-  }
-}
-# manual plugin
-# use ("~/.local/share/nupm/modules" | path join "nupm")
+use app_config.nu *;
+
+export def "nupm load" [] {
+  config check;
+
+  let plugins_declaration_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
+
+  let plugins_bin = (
+    open $plugins_declaration_file
+    | get bin
+  );
+
+  for bin in ( $plugins_bin | transpose name path ) {
+    print $bin.path;
+    try {
+      plugin add ( $bin | get path );
+
+      print $"🔌 ($bin.name)"
+
+    } catch { print $"❌ (ansi rb)($bin.name)(ansi reset)" };
+
+
+  };
+
+  print $"(ansi gb) Done thank's to Allah 🌻(ansi reset)";
+
+};

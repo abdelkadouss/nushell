@@ -176,13 +176,13 @@ export def --wrapped main [
 
   } else if (
     $env.config.plugins.e?.alias?
-    | get -i $files.0
+    | get -o $files.0
     | is-not-empty
   ) {
     use editor;
 
     $env.config.plugins.e.alias
-    | get -i $files.0
+    | get -o $files.0
     | path expand
     | (
       if ( $in | path type ) == 'dir' {
