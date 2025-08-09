@@ -42,7 +42,7 @@ export def "external run" [
   }
 
   if ( $command | is-not-empty ) {
-    let command_type = ( $command | get -i type );
+    let command_type = ( $command | get -o type );
 
     if ( $command_type | is-not-empty ) {
       match $command_type {
@@ -53,20 +53,20 @@ export def "external run" [
             | get expansion
             | first
             | which $in
-            | get -i path
+            | get -o path
           );
 
           return ( run_bin $bins ...$args );
 
         },
         "custom" => {
-          let bin = ( $command | get -i command | first );
+          let bin = ( $command | get -o command | first );
 
           return ( run_bin $bin ...$args );
 
         },
         _ => {
-          let bin = ( $command | get -i path | first );
+          let bin = ( $command | get -o path | first );
 
           return ( run_bin $bin ...$args );
 
