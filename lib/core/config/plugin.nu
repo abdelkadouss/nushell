@@ -16,12 +16,17 @@ $env.config.plugins = {
       $env.NU_CONFIG_DIR
       | path join "packages.toml"
     ),
+    NUPM_TMP_DIR: "/var/tmp/nupm",
+    NUPM_PLUGINS_DECLARATION_FILE_PATH: (
+      $env.NU_CONFIG_DIR
+      | path join "plugins.toml"
+    ),
     NUPM_BIN_DECLARATION_FILE_PATH: (
       $env.NU_CONFIG_DIR
       | path join "plugins.toml"
     ),
-    NUPM_DIST_PATH: ($env.NU_CONFIG_DIR | path join "plugins"),
-    NUPM_HOME: ($env.XDG_DATA_HOME | path join "nupm"),
+    NUPM_DIST_PATH: ($env.NU_DATA_DIR | path join "nupm"),
+    NUPM_HOME: ($env.NU_DATA_DIR | path join "nupm"),
   },
   self_host: {
     podman_machine: "self-host-machine",

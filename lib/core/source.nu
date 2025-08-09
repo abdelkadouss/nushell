@@ -2,10 +2,10 @@
 # integrations
 
 ## starship
-source ~/.config/nushell/plugins/scripts/gen/starship.nu;
+source gen/starship.nu;
 
 ## zoxide
-source ~/.config/nushell/plugins/scripts/gen/zoxide.nu;
+source gen/zoxide.nu;
 
 ## carapace
 # source ~/.config/nushell/plugins/scripts/gen/carapace.nu;

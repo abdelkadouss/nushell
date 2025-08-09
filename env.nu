@@ -10,6 +10,7 @@ $env.XDG_DATA_HOME = ($env.HOME | path join ".local/share");
 $env.XDG_CACHE_HOME = ($env.HOME | path join ".cache");
 # nu
 $env.NU_CONFIG_DIR = ($env.XDG_CONFIG_HOME | path join "nushell");
+$env.NU_DATA_DIR = ($env.XDG_DATA_HOME | path join "nushell");
 
 # Specifies how environment variables are:
 # - converted from a string to a value on Nushell startup (from_string)
@@ -32,10 +33,8 @@ $env.NU_LIB_DIRS = [
   ( $env.NU_CONFIG_DIR | path join 'lib/scripts' ) # add <nushell-config-dir>/scripts
   ( $env.NU_CONFIG_DIR | path join 'lib/modules' ) # add <nushell-config-dir>/scripts
   ( $env.XDG_DATA_HOME | path join 'completions' ) # default home for nushell completions
-  # plugins scripts/modules
-  ( $env.NU_CONFIG_DIR | path join 'plugins/scripts' )
-  ( $env.NU_CONFIG_DIR | path join 'plugins/modules' )
-  # ($env.config.plugins.nupm.NUPM_DIST_PATH | path join "scripts")FIXME:
+  # nu data dir
+  $env.NU_DATA_DIR
 ]
 
 # Directories to search for plugin binaries when calling register
