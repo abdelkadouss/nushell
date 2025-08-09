@@ -25,4 +25,4 @@ $env.LS_COLORS = (
   | str trim
 )
 
-overlay hide theme --keep-env [ LS_COLORS ]; # expected issue that maybe $env.config.color_config is not set
+overlay hide theme --keep-env [ LS_COLORS, config ];

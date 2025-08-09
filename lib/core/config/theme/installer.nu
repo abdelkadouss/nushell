@@ -1,8 +1,6 @@
 let THEME_DIR = (
   [
-    $env.NU_CONFIG_DIR,
-    "plugins",
-    "scripts"
+    $env.NU_DATA_DIR
     "themes"
   ] | path join
 )
