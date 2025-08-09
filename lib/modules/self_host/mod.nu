@@ -2,9 +2,9 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
-use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
+use ../../shared/external *;
 
-alias run = run_bin_if_in_path;
+alias run = external run;
 
 export use "./start.nu" *;
 export use "./stop.nu" *;
@@ -15,7 +15,7 @@ export def "self host" [
   app_name: string,
   --custom-host-script(-c): string = "default",
 ] {
-  make_sure_bin_in_the_path [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker-compose" ];
 
   if not ($path | path exists) {
     error make {
@@ -45,10 +45,10 @@ export def "self host" [
 
   if ($custom_host_script == "default") {
     try {
-      run colima start --vm-type qemu | ignore;
+      run colima start `--vm-type` qemu | ignore;
     } catch { ignore };
     cd ($data_path | path join $app_name);
-    run docker-compose -p $app_name up -d;
+    run docker-compose `-p` $app_name up `-d`;
 
   } else {
     print $"(ansi green_bold)done thank's to Allah, now copping the custom host script.(ansi reset)"

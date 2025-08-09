@@ -2,9 +2,9 @@ use "./data_path.nu" get_data_path;
 
 use "./state_manager.nu" "state add";
 
-use ../../shared/bin_utils.nu [run_bin_if_in_path, make_sure_bin_in_the_path];
+use ../../shared/external *;
 
-alias run = run_bin_if_in_path;
+alias run = external run;
 
 export def apps [] {
   let data_path = (get_data_path);
@@ -17,7 +17,7 @@ export def apps [] {
 };
 
 export def "self host start" [app_name: string@apps] {
-  make_sure_bin_in_the_path [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker-compose" ];
 
   let data_path = (get_data_path);
 
@@ -27,7 +27,7 @@ export def "self host start" [app_name: string@apps] {
       | path join "apps.toml"
     )
     | get apps
-    | get -i $app_name
+    | get -o $app_name
     | get path
   );
 

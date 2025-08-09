@@ -1,7 +1,7 @@
-use ../shared/bin_utils.nu [make_sure_bin_in_the_path, run_bin_if_in_path];
+use ../shared/external *;
 
 export def main [] {
-  make_sure_bin_in_the_path ["python3"];
+  external exist --panic true ["python3"];
   let myIpAdr = (
     sys net
     | where name == en0
@@ -12,7 +12,7 @@ export def main [] {
     | get address
   )
 
-  print $"just go to:\n http://($myIpAdr):8000"
+  print $"(ansi bg)just go to:(char nl)(ansi bu)http://($myIpAdr):8000(ansi reset)"
 
-  run_bin_if_in_path python3 -m http.server;
+  external run python3 `-m` http.server;
 }
