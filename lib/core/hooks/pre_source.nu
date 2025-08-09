@@ -1,8 +1,6 @@
 let GEN_DIR = (
   [
-    $env.NU_CONFIG_DIR,
-    "plugins",
-    "scripts"
+    $env.NU_DATA_DIR,
     "gen"
   ] | path join
 );
@@ -18,23 +16,6 @@ let gen_scripts = [
     name: "zoxide"
     script: {|| zoxide init nushell }
   }
-  # {
-  #   name: "carapace" # cheak out ../../completion/carapace.nu
-  #   script: {|| carapace _carapace nushell }
-  # }
-  # {
-  #   name: "mise"
-  #   script: {|| mise activate nu }
-  # }
-  # {
-  #   name: "proto"
-  #   script: {|| proto activate nu }
-  # }
-  # {
-  #   name: "atuin"
-  #   script: {||  atuin init nu }
-  # }
-
 ]
 
 for gen in $gen_scripts {
