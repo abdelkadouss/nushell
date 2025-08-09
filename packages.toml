@@ -1,6 +1,27 @@
-[packages]
-nu_plugin_clipboard = "https://github.com/FMotalleb/nu_plugin_clipboard.git"
-nu_plugin_audio_hook = "https://github.com/FMotalleb/nu_plugin_audio_hook"
-nu_plugin_emoji = "https://github.com/fdncred/nu_plugin_emoji.git"
-nu_plugin_net = "https://github.com/fennewald/nu_plugin_net"
-nu_plugin_nupsql = "https://gitlab.com/HertelP/nu_plugin_nupsql.git"
+[packages.nu_plugin_clipboard]
+repo = "https://github.com/FMotalleb/nu_plugin_clipboard.git"
+type = "cargo-git"
+
+[packages.nu_plugin_audio_hook]
+repo = "https://github.com/FMotalleb/nu_plugin_audio_hook"
+type = "cargo-git"
+
+[packages.nu_plugin_emoji]
+repo = "nu_plugin_emoji"
+type = "crate"
+
+[packages.nu_plugin_net]
+repo = "nu_plugin_net"
+type = "crate"
+
+[packages.nu_plugin_highlight]
+repo = "nu_plugin_highlight"
+type = "crate"
+
+[packages.nu_plugin_nupsql]
+repo = "https://gitlab.com/HertelP/nu_plugin_nupsql.git"
+type = "cargo-git"
+
+[packages."bookmark_for_dir.nu"]
+repo = "https://github.com/yh17549/nu-dir-bookmark.git*bookmark_for_dir.nu"
+type = "git-script"
