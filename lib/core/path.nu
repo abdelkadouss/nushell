@@ -95,9 +95,9 @@ let path_groups = [
   $obsidian_macos,
   $nvim_mason,
   $brew,
-  $doom
-  $pkgs,
-  # $proto
+  $doom,
+  $proto,
+  $pkgs
 ];
 
 for path in ($path_groups | flatten) {
