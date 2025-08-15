@@ -65,7 +65,7 @@ let nvim_mason = [
 # proto
 let proto = [
   ($env.PROTO_HOME | path join bin)
-  ($env.PROTO_HOME | path join shims)
+  # ($env.PROTO_HOME | path join shims) # this thing is slow down the tools and i don't useing proto as a tool manager in my project do i just useing it for global installion so i don't need this insha'Allah
 ];
 
 let pkgs = [

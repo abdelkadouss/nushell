@@ -20,10 +20,6 @@ let gen_scripts = [
     name: proto_completions
     script: {|| proto completions --shell nu --yes }
   }
-  {
-    name: proto_activation
-    script: {|| proto activate --yes nu }
-  }
 ]
 
 for gen in $gen_scripts {

@@ -12,4 +12,3 @@ source gen/zoxide.nu;
 
 ## proto
 source gen/proto_completions.nu;
-source gen/proto_activation.nu;
