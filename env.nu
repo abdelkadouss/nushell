@@ -51,7 +51,7 @@ $env.NU_PLUGIN_DIRS = [
 # $env.PATH = ($env.PATH | split row (char esep))
 # path add /some/path
 #path add ($env.HOME | path join ".nix-profile/bin")
-$env.CARGO_HOME = $"($env.HOME)/.cargo";
+$env.CARGO_HOME = $"($env.XDG_DATA_HOME)/cargo";
 #path add ($env.HOME | path join ".local" "bin")
 # $env.PATH = ($env.PATH | uniq)
 
@@ -84,6 +84,11 @@ $env.BAT_THEME = "Catppuccin Mocha";
 
 # yazi
  $env.EDITOR = 'nvim'
+
+
+# bun
+$env.BUN_INSTALL = ( $env.XDG_DATA_HOME | path join "bun" );
+$env.BUN_HOME = $env.BUN_INSTALL;
 
 # mac clis
 $env.xcodebuild = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3";
@@ -153,6 +158,8 @@ $env.PROTO_HOME = (
     "proto"
   ] | path join
 );
+
+$env.PROTO_CONFIG_MODE = 'global';
 
 # pkg
 $env.pkg = {

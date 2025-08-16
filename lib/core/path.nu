@@ -27,7 +27,7 @@ let deno = [
 ];
 
 let bun = [
-  ($env.HOME | path join ".bun/bin")
+  ($env.BUN_INSTALL | path join "bin")
 ];
 
 let llvm = [
@@ -78,7 +78,11 @@ let brew = [
 
 let doom = [
   ($env.home | path join ".config/emacs/bin" )
-]
+];
+
+let flutter = [
+  ($env.XDG_DATA_HOME | path join "flutter/bin")
+];
 
 # passing to the path #######
 let path_groups = [
@@ -96,6 +100,7 @@ let path_groups = [
   $nvim_mason,
   $brew,
   $doom,
+  $flutter,
   $proto,
   $pkgs
 ];

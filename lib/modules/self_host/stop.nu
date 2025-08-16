@@ -25,7 +25,7 @@ export def "self host stop" [
   --stop-machine(-m) = false
   ] {
 
-  make_sure_bin_in_the_path [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker-compose" ];
 
   let data_path = (get_data_path);
 

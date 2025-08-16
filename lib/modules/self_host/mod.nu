@@ -6,9 +6,10 @@ use ../../shared/external *;
 
 alias run = external run;
 
-export use "./start.nu" *;
-export use "./stop.nu" *;
-export use "./state_manager.nu" "self host list";
+export use start.nu *;
+export use stop.nu *;
+export use update.nu *;
+export use state_manager.nu "self host list";
 
 export def "self host" [
   path: string,
