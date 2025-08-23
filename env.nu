@@ -151,6 +151,25 @@ $env.GIT_TEMPLATE_DIR = ($env.XDG_CONFIG_HOME | path join "git");
 $env.STCONFDIR = ($env.HOME | path join ".config/syncthing");
 $env.STDATADIR = ($env.HOME | path join ".local/share/syncthing");
 
+# lua
+$env.LUA_PATH = (
+  [
+    (
+      $env.XDG_DATA_HOME
+      | path join "lua/lua_modules/share/lua/5.4/?.lua;"
+    )
+    (
+      $env.XDG_DATA_HOME
+      | path join "lua/lua_modules/share/lua/5.4/?/init.lua;;"
+    )
+  ]
+  | str join 
+);
+$env.LUA_CPATH = (
+  $env.XDG_DATA_HOME
+  | path join "lua/lua_modules/lib/lua/5.4/?.so;;"
+);
+
 # proto
 $env.PROTO_HOME = (
   [
@@ -160,34 +179,6 @@ $env.PROTO_HOME = (
 );
 
 $env.PROTO_CONFIG_MODE = 'global';
-
-# pkg
-$env.pkg = {
-  source_dir: (
-    [
-      $env.XDG_CONFIG_HOME,
-      "pkg",
-    ] | path join
-  ),
-};
-
-$env.pkg = {
-  ...$env.pkg,
-
-  bridges_set: (
-    [
-      $env.pkg.source_dir,
-      ".bridges"
-    ] | path join
-  )
-
-  target_dir: "/opt/pkg",
-
-  db_path: "/var/db/pkg/packages.db",
-
-  load_path: "/run/pkg"
-
-};
 
 # PATH ===#
 source ~/.config/nushell/lib/core/path.nu;

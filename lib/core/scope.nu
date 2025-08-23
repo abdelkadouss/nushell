@@ -44,9 +44,6 @@ use fzf.nu *;
 # d2 stdin
 use d2_stdin.nu *;
 
-# pkg
-use pkg *;
-
 # as admin
 use as_admin.nu *;
 
