@@ -27,3 +27,6 @@ export extern hx [
     --working-dir(-w): glob,                    # Specify an initial working directory
     ...files: glob,                             # Sets the input file to use, position can also be specified via file[:row[:col]]
 ]
+
+hide grammar_categories;
+hide health_categories;

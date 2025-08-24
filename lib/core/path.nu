@@ -69,7 +69,7 @@ let proto = [
 ];
 
 let pkgs = [
-  "/run/pkg"
+  "/usr/local/pkg"
 ];
 
 let brew = [

@@ -4,7 +4,6 @@ overlay use completion;
 use fish.nu;
 use carapace.nu;
 use zoxide.nu;
-source ./hx.nu
 
 # This completer will use carapace by default
 let external_completer = {|spans|
@@ -23,8 +22,6 @@ let external_completer = {|spans|
   }
 
   match $spans.0 {
-    # carapace doesn't have completions for asdf
-    asdf => {|spans| fish $spans }
     # and doesn't have completions for mise
     mise => {|spans| fish $spans }
     # and doesn't have completions for lnk
@@ -50,3 +47,8 @@ $env.config.completions = {
 }
 
 overlay hide completion --keep-env [ config ];
+
+# source the stuff u wanna keep in the scope like the extern cmds
+source ./hx.nu;
+source ./pkg.nu;
+source ./asdf.nu;
