@@ -30,6 +30,7 @@ $env.ENV_CONVERSIONS = {
 # Directories to search for scripts when calling source or use
 # The default for this is $nu.default-config-dir/scripts
 $env.NU_LIB_DIRS = [
+  ( $env.NU_CONFIG_DIR | path join 'lib' ) # add <nushell-config-dir>
   ( $env.NU_CONFIG_DIR | path join 'lib/scripts' ) # add <nushell-config-dir>/scripts
   ( $env.NU_CONFIG_DIR | path join 'lib/modules' ) # add <nushell-config-dir>/scripts
   ( $env.XDG_DATA_HOME | path join 'completions' ) # default home for nushell completions
@@ -179,6 +180,15 @@ $env.PROTO_HOME = (
 );
 
 $env.PROTO_CONFIG_MODE = 'global';
+
+# asdf
+$env.ASDF_TOOL_VERSIONS_FILENAME = ".tool-versions";
+$env.ASDF_DATA_DIR = ($env.XDG_DATA_HOME | path join "asdf");
+$env.ASDF_CONFIG_FILE = (
+  $env.XDG_CONFIG_HOME
+  | path join "asdf"
+  | path join "asdfrc"
+);
 
 # PATH ===#
 source ~/.config/nushell/lib/core/path.nu;
