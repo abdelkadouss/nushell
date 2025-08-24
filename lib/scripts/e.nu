@@ -203,6 +203,17 @@ export def --wrapped main [
     | path exists
     | any {|exising| $exising }
     | if $in or $new {
+      for file in $files {
+        $file
+        | path dirname
+        | path expand
+        | path exists
+        | if not $in {
+          mkdir ($file | path dirname);
+
+        }
+      }
+
       editor run ...( $files | path expand );
 
     } else {
