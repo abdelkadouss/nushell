@@ -16,6 +16,7 @@ let install = [
   '/nix/var/nix/profiles/default/bin',
   '/opt/homebrew/bin',
   (($env.HOME) | path join "bin")
+  "/usr/local/bin"
 ];
 
 let go = [

@@ -148,6 +148,9 @@ $env.BROWSER = 'zen';
 $env.GIT_CONFIG_GLOBAL = ($env.XDG_CONFIG_HOME | path join "git/config");
 $env.GIT_TEMPLATE_DIR = ($env.XDG_CONFIG_HOME | path join "git");
 
+# gh
+$env.GH_PAGER = "diffnav";
+
 # syncthing
 $env.STCONFDIR = ($env.HOME | path join ".config/syncthing");
 $env.STDATADIR = ($env.HOME | path join ".local/share/syncthing");
