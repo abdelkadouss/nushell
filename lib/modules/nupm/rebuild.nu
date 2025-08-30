@@ -40,6 +40,9 @@ export def "nupm rebuild" [] {
       nupm add $plugin.info.repo $plugin.info.type;
       print $"Done, thank's to Allah 🌻";
 
+    } catch {|err|
+      print $"(ansi rb) Error:(ansi reset)";
+      $err
     }
 
   };
