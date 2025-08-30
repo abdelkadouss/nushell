@@ -39,18 +39,6 @@ let console_ninja = [
   ($env.HOME | path join ".console-ninja/.bin")
 ];
 
-let zen_macos = [
-  "/Applications/Zen.app/Contents/MacOS"
-];
-
-let qview_macos = [
-  "/Applications/qView.app/Contents/MacOS"
-];
-
-let obsidian_macos = [
-  "/Applications/Obsidian.app/Contents/MacOS"
-];
-
 let cargo = [
   ($env.CARGO_HOME | path join "bin")
 ];
@@ -69,16 +57,16 @@ let proto = [
   # ($env.PROTO_HOME | path join shims) # this thing is slow down the tools and i don't useing proto as a tool manager in my project do i just useing it for global installion so i don't need this insha'Allah
 ];
 
+let gui = [
+  /usr/local/gui
+]
+
 let pkgs = [
   "/usr/local/pkg"
 ];
 
 let brew = [
   "/opt/homebrew/opt/libarchive/bin"
-];
-
-let doom = [
-  ($env.home | path join ".config/emacs/bin" )
 ];
 
 let flutter = [
@@ -95,14 +83,11 @@ let path_groups = [
   $cargo,
   $llvm,
   $console_ninja,
-  $zen_macos,
-  $qview_macos,
-  $obsidian_macos,
   $nvim_mason,
   $brew,
-  $doom,
   $flutter,
   $proto,
+  $gui
   $pkgs
 ];
 

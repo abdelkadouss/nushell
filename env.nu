@@ -92,11 +92,11 @@ $env.BUN_INSTALL = ( $env.XDG_DATA_HOME | path join "bun" );
 $env.BUN_HOME = $env.BUN_INSTALL;
 
 # mac clis
-$env.xcodebuild = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3";
-$env.DEVELOPER_DIR = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3"
-$env.PATH = ($env.path | prepend ($env.xcodebuild | path join "usr"));
-$env.PATH = ($env.path | prepend ($env.xcodebuild | path join "SDKs"));
-$env.PATH = ($env.path | prepend ($env.xcodebuild | path join "Library"));
+#$env.xcodebuild = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3";
+#$env.DEVELOPER_DIR = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3"
+# $env.PATH = ($env.path | prepend ($env.xcodebuild | path join "usr"));
+# $env.PATH = ($env.path | prepend ($env.xcodebuild | path join "SDKs"));
+# $env.PATH = ($env.path | prepend ($env.xcodebuild | path join "Library"));
 
 # mac stuff
 # $env.MACOSX_DEPLOYMENT_TARGET = "11.0";
@@ -143,6 +143,7 @@ $env.MOJO_HOME = $"($env.HOME)/.modular/bin";
 
 # browser
 $env.BROWSER = 'zen';
+$env.TERMINAL = 'ghostty'
 
 # git
 $env.GIT_CONFIG_GLOBAL = ($env.XDG_CONFIG_HOME | path join "git/config");
