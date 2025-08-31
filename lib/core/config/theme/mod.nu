@@ -15,6 +15,7 @@ catppuccin_mocha set color_config;
 
 # override the default theme
 $env.config.color_config.background = "#000000";
+$env.config.color_config.cursor = "#f5e0dc"
 
 # update the terminal theme based on the env var
 update terminal;
