@@ -9,7 +9,13 @@ if not ( $env.config.plugins.new.templates_dir? | path exists ) {
 
 # path
 
-let path_groups = [ ];
+let nupm = [
+  ($env.config.plugins.nupm.NUPM_HOME | path join "bin")
+]
+
+let path_groups = [
+  $nupm
+];
 
 for path in ($path_groups | flatten) {
   if ($path | path exists) {
