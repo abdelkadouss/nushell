@@ -17,8 +17,8 @@ let gen_scripts = [
     script: {|| zoxide init nushell }
   }
   {
-    name: proto_completions
-    script: {|| proto completions --shell nu --yes }
+    name: mise_activate
+    script: {|| try { mise activate nu } catch { "use std/log warning;\n warning 'mise is not installed and u sourcing it's files i ur shell config'" } }
   }
 ]
 

@@ -11,4 +11,4 @@ source gen/zoxide.nu;
 # source ~/.config/nushell/plugins/scripts/gen/carapace.nu;
 
 ## proto
-source gen/proto_completions.nu;
+source gen/mise_activate.nu;
