@@ -84,7 +84,14 @@ export def "self host" [
   };
 
   let apps = (
-    open ($data_path | path join "apps.toml")
+    try {
+      open ($data_path | path join "apps.toml")
+    } catch {
+      "[apps]"
+      | save ($data_path | path join "apps.toml");
+
+      open ($data_path | path join "apps.toml")
+    }
     | get apps
     | upsert $app_name {
       name: $app_name
