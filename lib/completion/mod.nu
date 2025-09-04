@@ -26,6 +26,7 @@ let external_completer = {|spans|
     mise => {|spans| fish $spans }
     # and doesn't have completions for lnk
     lnk => {|spans| fish $spans }
+    tsk => {|spans| fish $spans }
     colima => {|spans| fish $spans }
     we => {|spans| carapace "watchexec" }
     lz => {|spans| carapace "lazygit" }
