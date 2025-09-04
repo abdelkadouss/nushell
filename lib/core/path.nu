@@ -20,7 +20,7 @@ let install = [
 ];
 
 let go = [
-  ($env.HOME | path join "go/bin")
+  $env.GOBIN
 ];
 
 let deno = [

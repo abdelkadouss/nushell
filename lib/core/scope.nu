@@ -20,9 +20,6 @@ use ttree.nu;
 # super touch.
 use t.nu;
 
-# make new project realy quick in Chaa Allah.
-use new.nu;
-
 # git short interface.
 use g.nu;
 
