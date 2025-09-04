@@ -91,6 +91,22 @@ $env.BAT_THEME = "Catppuccin Mocha";
 $env.BUN_INSTALL = ( $env.XDG_DATA_HOME | path join "bun" );
 $env.BUN_HOME = $env.BUN_INSTALL;
 
+# go
+$env.GOPATH = ( $env.XDG_DATA_HOME | path join "go" );
+$env.GOBIN = ( $env.XDG_DATA_HOME | path join "go/bin" );
+
+# dart
+$env.DART_HOME = ( $env.XDG_DATA_HOME | path join "dart" );
+$env.PUB_CACHE = ( $env.XDG_CACHE_HOME | path join "dart/pub" );
+$env.ANALYZER_STATE_LOCATION_OVERRIDE = ( $env.XDG_CACHE_HOME | path join "dart/server" );
+$env.DART_SDK_PATH = ( $env.DART_HOME | path join "sdk");
+
+# docker
+
+# $env.DOCKER_HOME = ( $env.XDG_DATA_HOME | path join "docker" );
+# $env.DOCKER_CONFIG = $env.DOCKER_HOME;
+# $env.DOCKER_CONTEXT = ( $env.DOCKER_HOME | path join "contexts" );
+
 # mac clis
 #$env.xcodebuild = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3";
 #$env.DEVELOPER_DIR = "/nix/store/amdympl4rz7kj93j82cva60v8007n4nv-apple-sdk-11.3"
@@ -121,11 +137,11 @@ $env.LD = "ld64.lld";
 $env.CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER = "gcc";
 
 # libiconv
-$env.LIBRARY_PATH = $"/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib:/usr/local/lib:($env.LIBRARY_PATH?)";
-$env.CPATH = $"/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/include:/usr/local/include:($env.CPATH?)";
-$env.LD_LIBRARY_PATH = "/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib:$LD_LIBRARY_PATH";
-$env.LDFLAGS = "-L/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib";
-$env.CFLAGS = "-I/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/include";
+# $env.LIBRARY_PATH = $"/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib:/usr/local/lib:($env.LIBRARY_PATH?)";
+# $env.CPATH = $"/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/include:/usr/local/include:($env.CPATH?)";
+# $env.LD_LIBRARY_PATH = "/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib:$LD_LIBRARY_PATH";
+# $env.LDFLAGS = "-L/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/lib";
+# $env.CFLAGS = "-I/nix/store/dvmq3xa54hfik85259wyf281m076s14h-libiconv-107/include";
 $env.DYLD_LIBRARY_PATH = $"($env.LIBRARY_PATH?):($env.DYLD_LIBRARY_PATH?)";
 # libarchive
 $env.CPATH = $"/opt/homebrew/opt/libarchive/bin:($env.CPATH?)";
@@ -142,7 +158,7 @@ $env.PUEUE_CONFIG_PATH = $"($env.HOME)/.config/pueue/config.yaml"
 $env.MOJO_HOME = $"($env.HOME)/.modular/bin";
 
 # browser
-$env.BROWSER = 'zen';
+$env.BROWSER = 'qutebrowser';
 $env.TERMINAL = 'ghostty'
 
 # git

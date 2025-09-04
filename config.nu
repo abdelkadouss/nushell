@@ -10,7 +10,7 @@ hide "read file";
 source core/source.nu;
 source core/alias.nu;
 source core/scope.nu;
-source core/hooks/after_load_config_env.nu;
+source core/hooks/after_config.nu;
 
 # completions
 source completion/mod.nu;
