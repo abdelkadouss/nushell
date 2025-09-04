@@ -74,6 +74,9 @@ $env.config.plugins = {
         ssl: false
       }
     ]
+  },
+  tm: {
+    enabled: false
   }
 } # Per-plugin configuration. See https://www.nushell.sh/contributor-book/plugins.html#configuration.
 

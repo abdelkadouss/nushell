@@ -26,3 +26,10 @@ for path in ($path_groups | flatten) {
 
 # drop unneeded imports from the global scope
 hide soft_run_bin_if_in_path;
+
+
+# tm
+# launch the terminal multiplexer at terminal startup insha'Allah
+use tm.nu;
+tm;
+hide "tm";
