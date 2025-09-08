@@ -2,13 +2,6 @@
 overlay new path;
 overlay use path;
 
-let android = [
-  ($env.ANDROID_SDK_ROOT | path join "cmdline-tools/latest/bin"),
-  ($env.ANDROID_HOME | path join "platform-tools"),
-  ($env.ANDROID_HOME | path join "emulator"),
-  ($env.ANDROID_HOME | path join "build-tools/34.0.0")
-];
-
 let install = [
   ($env.HOME | path join ".nix-profile/bin"),
   '/run/current-system/sw/bin',
@@ -43,10 +36,6 @@ let cargo = [
   ($env.CARGO_HOME | path join "bin")
 ];
 
-let mojo = [
-  ($env.MOJO_HOME)
-];
-
 let nvim_mason = [
   ($env.HOME | path join ".local/share/nvim/mason/bin")
 ]
@@ -75,7 +64,6 @@ let flutter = [
 
 # passing to the path #######
 let path_groups = [
-  $android,
   $install,
   $go,
   $deno,
