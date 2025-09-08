@@ -20,3 +20,6 @@ alias lz = lazygit;
 
 # zellij
 alias m = zellij;
+
+# run commands
+alias "run emu" = emulator -avd android_35 -no-metrics
