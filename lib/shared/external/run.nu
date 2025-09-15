@@ -12,7 +12,7 @@ export def "external run" [
   --dont-wait-return-value-to-exit(-w) = false,
   ...args
 ] {
-  let command = ( which $bin );
+  let command = ( which --all $bin | where path != '' );
 
   def run_bin [ bin:string, ...args ] {
     if ( $bin | is-not-empty ) {
@@ -42,7 +42,7 @@ export def "external run" [
   }
 
   if ( $command | is-not-empty ) {
-    let command_type = ( $command | get -o type );
+    let command_type = ( $command | get -o type | first );
 
     if ( $command_type | is-not-empty ) {
       match $command_type {
