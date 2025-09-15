@@ -89,7 +89,7 @@ let flutter = {
 
 let rust = {
   CARGO_HOME: ( $env.XDG_DATA_HOME | path join "cargo" )
-  RUSTUP_HOME: ( $env.XDG_DATA_HOME | path join "rustup" )
+  # RUSTUP_HOME: ( $env.XDG_DATA_HOME | path join "rustup" )
   CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER: "gcc"
 }
 
@@ -109,11 +109,13 @@ let zsh = {
 }
 
 let c = {
-  CC: "gcc"
-  CXX: "g++"
-  LD: "ld64.lld"
+  CC: "/opt/homebrew/opt/llvm/bin/clang"
+  CXX: "/opt/homebrew/opt/llvm/bin/clang++"
+  LD: "lld-link"
   CPATH: $"/opt/homebrew/opt/libarchive/bin:($env.CPATH?)"
+  CPPFLAGS: "-I/opt/homebrew/opt/llvm/include"
   DYLD_LIBRARY_PATH: $"($env.LIBRARY_PATH?):($env.DYLD_LIBRARY_PATH?)"
+  LDFLAGS: "-L/opt/homebrew/opt/llvm/lib/c++ -L/opt/homebrew/opt/llvm/lib/unwind -lunwind"
 }
 
 let git = {
@@ -170,6 +172,11 @@ let asdf = {
   )
 }
 
+let topiary = {
+  TOPIARY_CONFIG_FILE: ($env.XDG_CONFIG_HOME | path join topiary languages.ncl)
+  TOPIARY_LANGUAGE_DIR: ($env.XDG_CONFIG_HOME | path join topiary languages)
+}
+
 let env_groups = [
   $nushell
   $tools
@@ -191,6 +198,7 @@ let env_groups = [
   $lua
   $proto
   $asdf
+  $topiary
 
 ];
 
