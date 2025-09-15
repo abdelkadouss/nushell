@@ -12,3 +12,6 @@ source gen/zoxide.nu;
 
 ## proto
 source gen/mise_activate.nu;
+
+## host related
+source gen/host_related_hooks.nu;

@@ -2,13 +2,6 @@
 alias cd = z;
 alias cdi = zi;
 
-# nix
-alias rebuild = sudo darwin-rebuild switch --flake ~/.nix#darwin;
-
-# dir bookmarks
-alias cdir = cd ~/Coding/;
-alias tdir = cd ~/Coding/test/;
-
 # ls
 alias l = ls -a;
 

@@ -2,7 +2,7 @@ use ../shared/external *;
 
 # env
 
-# android sdk
+## android sdk
 
 $env.ANDROID_HOME = (
   external run mise where android-sdk --stdout-message true --default-output ""

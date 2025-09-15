@@ -3,11 +3,11 @@ overlay new path;
 overlay use path;
 
 let install = [
-  ($env.HOME | path join ".nix-profile/bin"),
-  '/run/current-system/sw/bin',
-  ($env.HOME | path join ".local/bin"),
-  '/nix/var/nix/profiles/default/bin',
-  '/opt/homebrew/bin',
+  ($env.HOME | path join ".nix-profile/bin")
+  '/run/current-system/sw/bin'
+  ($env.HOME | path join ".local/bin")
+  '/nix/var/nix/profiles/default/bin'
+  '/opt/homebrew/bin'
   (($env.HOME) | path join "bin")
   "/usr/local/bin"
 ];
@@ -24,7 +24,7 @@ let bun = [
   ($env.BUN_INSTALL | path join "bin")
 ];
 
-let llvm = [
+let llvm_macos = [
   '/opt/homebrew/opt/llvm/bin'
 ];
 
@@ -64,17 +64,17 @@ let flutter = [
 
 # passing to the path #######
 let path_groups = [
-  $install,
-  $go,
-  $deno,
-  $bun,
-  $cargo,
-  $llvm,
-  $console_ninja,
-  $nvim_mason,
-  $brew,
-  $flutter,
-  $proto,
+  $install
+  $go
+  $deno
+  $bun
+  $cargo
+  $llvm_macos
+  $console_ninja
+  $nvim_mason
+  $brew
+  $flutter
+  $proto
   $gui
   $pkgs
 ];
@@ -85,4 +85,4 @@ for path in ($path_groups | flatten) {
   }
 }
 
-overlay hide path --keep-env [ PATH ];
+overlay hide path --keep-env [PATH];
