@@ -177,6 +177,10 @@ let topiary = {
   TOPIARY_LANGUAGE_DIR: ($env.XDG_CONFIG_HOME | path join topiary languages)
 }
 
+let pkgx = {
+  PKGX_DIR: ($env.XDG_DATA_HOME | path join pkgx)
+}
+
 let env_groups = [
   $nushell
   $tools

@@ -49,3 +49,6 @@ source nupm/script/bookmark_for_dir.nu
 
 # link
 use link.nu;
+
+# pkgx
+use pkgx_build.nu *;
