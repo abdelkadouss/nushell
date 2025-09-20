@@ -46,3 +46,6 @@ use as_admin.nu *;
 
 # dir marks
 source nupm/script/bookmark_for_dir.nu
+
+# link
+use link.nu;

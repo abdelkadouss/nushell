@@ -15,4 +15,7 @@ alias lz = lazygit;
 alias m = zellij;
 
 # run commands
-alias "run emu" = emulator -avd android_35 -no-metrics
+alias "run emu" = emulator -avd android_35 -no-metrics;
+
+# nufmt
+alias "nufmt" = ~/.local/share/nushell/nupm/script/nufmt.nu -c ( $env.TOPIARY_CONFIG_FILE | path dirname );
