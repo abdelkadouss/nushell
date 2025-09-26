@@ -12,7 +12,7 @@ export def main [] {
     | get address
   )
 
-  print $"(ansi bg)just go to:(char nl)(ansi bu)http://($myIpAdr):8000(ansi reset)"
+  print $"(ansi gb)just go to:(char nl)(ansi bu)http://($myIpAdr):8000(ansi reset)"
 
   external run python3 `-m` http.server;
 }
