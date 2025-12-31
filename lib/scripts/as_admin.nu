@@ -124,7 +124,7 @@ export def "as admin" [ cmd: closure ] {
     "
 
     # clean up
-    rm -rfp $to_remove_files;
+    $to_remove_files | each { rm -rfp };
 
   } else {
     do $cmd

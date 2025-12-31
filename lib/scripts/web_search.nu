@@ -10,9 +10,9 @@ export def www [url: string, search: string] {
 
 export def youtube [search: string] {
   let url = "https://www.youtube.com/results?search_query=";
-  web_search $url $search;
+  www $url $search;
 }
 export def ddg [search: string] {
   let url = "https://duckduckgo.com/?q=";
-  web_search $url $search;
+  www $url $search;
 }
