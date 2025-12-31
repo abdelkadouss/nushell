@@ -75,7 +75,7 @@ let gradle = {
 }
 
 let dart = {
-  env.DART_HOME: ( $env.XDG_DATA_HOME | path join "dart" )
+  DART_HOME: ( $env.XDG_DATA_HOME | path join "dart" )
   PUB_CACHE: ( $env.XDG_CACHE_HOME | path join "dart/pub" )
   ANALYZER_STATE_LOCATION_OVERRIDE: ( $env.XDG_CACHE_HOME | path join "dart/server" )
   DART_SDK_PATH: ( $env.XDG_DATA_HOME | path join "dart/sdk" )
@@ -85,6 +85,7 @@ let dart = {
 let flutter = {
   FLUTTER_HOME: ( $env.XDG_DATA_HOME | path join "flutter" )
   FLUTTER_STORAGE_BASE: ( $env.XDG_DATA_HOME | path join "flutter" )
+  FVM_CACHE_PATH: ( $env.XDG_CACHE_HOME | path join "fvm" )
 }
 
 let rust = {

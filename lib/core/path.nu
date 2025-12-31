@@ -58,8 +58,9 @@ let brew = [
   "/opt/homebrew/opt/libarchive/bin"
 ];
 
-let flutter = [
+let flutter = [ # and dart
   ($env.XDG_DATA_HOME | path join "flutter/bin")
+  ($env.PUB_CACHE | path join "bin")
 ];
 
 # passing to the path #######

@@ -8,7 +8,7 @@ $env.ANDROID_HOME = (
   external run mise where android-sdk --stdout-message true --default-output ""
 );
 $env.ANDROID_SDK_ROOT = ( $env.ANDROID_HOME  | path dirname );
-$env.NDK_HOME = ( $env.ANDROID_HOME | path join "ndk/27.2.12479018" );
+$env.NDK_HOME = ( $env.ANDROID_HOME | path join "ndk" );
 $env.ANDROID_AVD_HOME = ( $env.XDG_CONFIG_HOME | path join ".android/avd" );
 
 
