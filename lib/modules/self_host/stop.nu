@@ -25,7 +25,7 @@ export def "self host stop" [
   --stop-machine(-m) = false
   ] {
 
-  external exist --panic true [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker" ];
 
   let data_path = (get_data_path);
 
@@ -68,7 +68,7 @@ export def "self host stop" [
     cd $app_path;
 
     if ($app_type == "default") {
-      run docker-compose `-p` $app_name down;
+      run docker compose `-p` $app_name down;
 
     } else {
       export-env {

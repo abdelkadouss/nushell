@@ -17,7 +17,7 @@ export def apps [] {
 };
 
 export def "self host start" [app_name: string@apps] {
-  external exist --panic true [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker" ];
 
   let data_path = (get_data_path);
 
@@ -60,7 +60,7 @@ export def "self host start" [app_name: string@apps] {
     try {
       run colima start `--vm-type` qemu | ignore;
     } catch { ignore };
-    run docker-compose `-p` $app_name up `-d`;
+    run docker compose `-p` $app_name up `-d`;
 
   } else {
     export-env {

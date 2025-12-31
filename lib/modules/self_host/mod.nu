@@ -16,7 +16,7 @@ export def "self host" [
   app_name: string,
   --custom-host-script(-c): string = "default",
 ] {
-  external exist --panic true [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker" ];
 
   if not ($path | path exists) {
     error make {
@@ -49,7 +49,7 @@ export def "self host" [
       run colima start `--vm-type` qemu | ignore;
     } catch { ignore };
     cd ($data_path | path join $app_name);
-    run docker-compose `-p` $app_name up `-d`;
+    run docker compose `-p` $app_name up `-d`;
 
   } else {
     print $"(ansi green_bold)done thank's to Allah, now copping the custom host script.(ansi reset)"

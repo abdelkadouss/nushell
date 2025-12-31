@@ -4,7 +4,7 @@ use data_path.nu get_data_path;
 use start.nu apps;
 
 export def "self host update" [app_name: string@apps] {
-  external exist --panic true [ "colima", "docker-compose" ];
+  external exist --panic true [ "colima", "docker" ];
 
   let data_path = (get_data_path);
 
