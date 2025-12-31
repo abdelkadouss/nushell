@@ -5,6 +5,7 @@ use config.nu 'config remove';
 
 use app_config.nu *;
 
+# remove a plugin
 export def "nupm remove" [
   pkg_name: string
 ] {

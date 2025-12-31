@@ -2,6 +2,7 @@ use ../../shared/environment.nu *;
 
 use app_config.nu *;
 
+# load the plugins
 export def "nupm load" [] {
   config check;
 

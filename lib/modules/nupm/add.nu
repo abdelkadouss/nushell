@@ -6,6 +6,7 @@ use config.nu 'config write';
 
 use app_config.nu *;
 
+# install a plugin
 export def 'nupm add' [
   pkg_repo: string,
   installation_type: string

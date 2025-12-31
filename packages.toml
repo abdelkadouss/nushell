@@ -27,5 +27,5 @@ repo = "https://github.com/yh17549/nu-dir-bookmark.git*bookmark_for_dir.nu"
 type = "git-script"
 
 [packages."nufmt.nu"]
-repo = "https://github.com/blindFS/topiary-nushell.git*nufmt.nu"
+repo = "https://github.com/blindFS/topiary-nushell.git*format.nu*nufmt.nu"
 type = "git-script"

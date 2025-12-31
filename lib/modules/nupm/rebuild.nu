@@ -5,7 +5,10 @@ use add.nu 'nupm add';
 
 use app_config.nu *;
 
-export def "nupm rebuild" [] {
+# install the plugins based on the declaration file
+export def "nupm rebuild" [
+  packages?: list
+] {
   config check;
 
   let input_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH;
@@ -17,11 +20,18 @@ export def "nupm rebuild" [] {
     | get -o packages
   )
 
-  for plugin in (
+  let plugins = (
     open $input_file
     | get -o packages
     | transpose name info
-  ) {
+    | (
+      let all_packages = $in.name;
+      $in
+      | where {|pkg| $pkg.name in ( $packages | default $all_packages)}
+    )
+  );
+
+  for plugin in $plugins {
     print $"(ansi bb) ($plugin.name): (ansi reset)";
 
     print $"\t🗑️:";

@@ -74,7 +74,7 @@ export module install {
   }
 
   export def git_script_or_module [
-    pkg_repo: string
+    pkg_repo_and_file_name: string # SYNTAX: <pkg repo>*<path/to/file/to/store>
     pkg_type: string
   ] {
     if not ( $pkg_type in $PKG_TYPES ) {
@@ -85,8 +85,8 @@ export module install {
     let tmp_dir = env exists --panic --return-value $.config.plugins.nupm.NUPM_TMP_DIR;
     let tmp_dir = ( mktemp --directory --tmpdir-path $tmp_dir );
 
-    let pkg_parse = ( $pkg_repo | split row "*" );
-    let pkg_repo = (
+    let pkg_parse = ( $pkg_repo_and_file_name | split row "*" );
+    let pkg_repo_url = (
       $pkg_parse
       | get 0
     );
@@ -100,7 +100,7 @@ export module install {
       | default null
     )
 
-    git clone $pkg_repo $tmp_dir
+    git clone $pkg_repo_url $tmp_dir
 
     mut pkg_path = (
       [
@@ -110,7 +110,7 @@ export module install {
     );
 
     if not ( $pkg_path | path exists ) {
-      panic $"No script found with name ( $pkg_name ) in ( $pkg_repo )"
+      panic $"No script found with name ( $pkg_name ) in ( $pkg_repo_url )"
 
     }
 
@@ -142,7 +142,7 @@ export module install {
 
     return {
       name: $pkg_name
-      repo: ( [ $pkg_repo $pkg_name ] | str join "*" )
+      repo: $pkg_repo_and_file_name
       path: $pkg_path
       pkg_type: $pkg_type
     }
