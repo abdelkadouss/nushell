@@ -117,4 +117,40 @@
     #     }
     # }
     #
+    {
+      name: git_commit
+      modifier: control
+      keycode: char_m
+      mode: [ vi_insert ]
+      event: [
+        {
+          send: ExecuteHostCommand,
+          cmd: 'try { git commit } catch { ["git commit -a" quit] | input list --fuzzy $"(ansi bb)what to do?(ansi reset)" | try { run-external ($in | split row " ") } }'
+        }
+      ]
+    }
+    {
+      name: lazygit
+      modifier: shift_alt
+      keycode: char_g
+      mode: [ vi_insert ]
+      event: [
+        {
+          send: ExecuteHostCommand,
+          cmd: "lazygit"
+        }
+      ]
+    }
+    {
+      name: flutter_watch_run_no_pub
+      modifier: control
+      keycode: char_e
+      mode: [ vi_insert ]
+      event: [
+        {
+          send: ExecuteHostCommand,
+          cmd: 'dart run flutterwatch -d lib -r -- run --no-pub'
+        }
+      ]
+    }
   ]
