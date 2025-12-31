@@ -269,7 +269,7 @@ export def --wrapped main [
 
           cd $path;
 
-          external run fzf ...$FZF_DEFAULT_OPTS $"--border-label=(pwd)" `--query` ( $not_handled | str join "" )
+          external run fzf ...$FZF_DEFAULT_OPTS $"--border-label=(pwd)" `--query` ( $not_handled | reverse | str join "" )
           | str trim -r -c (char nl)
           | editor run $in;
 

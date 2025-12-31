@@ -149,7 +149,28 @@
       event: [
         {
           send: ExecuteHostCommand,
-          cmd: 'dart run flutterwatch -d lib -r -- run --no-pub'
+          cmd: "
+        const cmds_and_dir_markers = {
+        'dart run flutterwatch -d lib -r -- run --no-pub': [pubspec.yaml, pubspec.lock, .dart_tool],
+        'cargo run': [Cargo.toml, Cargo.lock],
+        'bun dev': [package.json, node_modules],
+        };
+
+        let dir_contents = (ls -a | get name);
+
+        $cmds_and_dir_markers
+        | transpose cmd dir_marker
+        | (
+        for row in $in { 
+        if ($row.dir_marker | all {|dm| $dm in $dir_contents }) {
+        run-external ( $row.cmd | split row ' ' );
+        return;
+        }
+        }
+        );
+
+        echo $'(ansi rb)cannot know the project type(ansi reset)';
+        "
         }
       ]
     }
