@@ -125,7 +125,7 @@
       event: [
         {
           send: ExecuteHostCommand,
-          cmd: 'try { git commit } catch { ["git commit -a" quit] | input list --fuzzy $"(ansi bb)what to do?(ansi reset)" | try { run-external ($in | split row " ") } }'
+          cmd: 'try { git commit } catch { ["git commit -a" quit] | input list --fuzzy $"(ansi lpr)what to do?(ansi reset)" | try { run-external ($in | split row " "); [no yes] | input list --fuzzy $"(ansi lpr)push?(ansi reset)" | (if $in == "yes" { git push }) } }'
         }
       ]
     }
