@@ -45,6 +45,7 @@ $env.ENV_CONVERSIONS = {
 let tools = {
   EDITOR: 'nvim'
   BROWSER: 'qutebrowser'
+  PAGER: 'bat'
 }
 
 let carapace = {

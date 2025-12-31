@@ -8,7 +8,7 @@ $env.config.plugins = {
       shell: ~/.config/nushell/config.nu
       env: ~/.config/nushell/env.nu
       pkg: ~/.config/pkg
-      keys: ~/.config/nushell/lib/core/keymapping.nuon
+      keys: ~/.config/nushell/lib/core/config/keymapping.nuon
     }
   },
   nupm: {
