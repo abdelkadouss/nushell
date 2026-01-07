@@ -1,177 +1,300 @@
 [
-    {
-      name: help_menu
-      modifier: control
-      keycode: char_f
-      mode: [emacs, vi_insert, vi_normal]
-      event: { send: menu name: help_menu }
-    },
-    {
-      name: change_completion_algorithm
-      modifier: control
-      keycode: char_a
-      mode: vi_insert
-      event: [
-        {
-          send: ExecuteHostCommand,
-          cmd: "
-          $env.config.completions.algorithm = (
-            match $env.config.completions.algorithm {
-                'prefix' => 'fuzzy'
-                _ => 'prefix'
-              }
-          );
-          $env.PROMPT_INDICATOR_VI_INSERT = {||
-            match $env.config.completions.algorithm {
-              'fuzzy' => '🔭 '
-              _ => ': '
-
-            }
-          };
-          do $env.PROMPT_COMMAND;
-          "
-        },
-      ]
-    },
-    {
-      name: G
-      modifier: shift
-      keycode: char_g
-      mode: vi_normal
-      event: { edit: MoveToEnd }
-    },
-    {
-      name: gg
-      modifier: none
-      keycode: char_g
-      mode: vi_normal
-      event: { edit: MoveToStart }
-    },
-    {
-      name: zoxide_navigation
-      modifier: control
-      keycode: char_z
-      mode: vi_insert
-      event: [
-        { edit: MoveToLineStart },
-        {
-          edit: insertString,
-          value: "cdi "
-        },
-        { send: Enter }
-      ]
-    },
-    {
-      name: fzf
-      modifier: control
-      keycode: char_n # n for navigate
-      mode: [ vi_normal, vi_insert ]
-      event: [
-        {
-          send: ExecuteHostCommand,
-          cmd: "
-          fzf --height=10 --layout=reverse --border-label='cd' --walker=dir,hidden --preview='lstr -sGg -L 3 --icons {}'
-          | cd $in;
-          "
-        }
-      ]
-    },
-    {
-      name: vars_menu
-      modifier: control
-      keycode: char_v
-      mode: vi_insert
-      event: { send: menu name: vars_menu }
-    },
-    {
-      name: next_page_menu
-      modifier: control
-      keycode: char_x
-      mode: [emacs, vi_insert, vi_normal]
-      event: { send: menupagenext }
-    },
-    {
-      name: change_dir_with_fzf
-      modifier: CONTROL
-      keycode: Char_t
-      mode: vi_insert
-      event:[
-        { edit: Clear }
-        { edit: InsertString,
-          value: "cd (ls -a | where type == dir | each { |row| $row.name} | str join (char nl) | fzf | decode utf-8 | str trim)"
-
-        }
-        { send: Enter }
-      ]
-    },
-    # {
-    #     name: undo_or_previous_page_menu
-    #     modifier: control
-    #     keycode: char_z
-    #     mode: emacs
-    #     event: {
-    #         until: [
-    #             { send: menupageprevious }
-    #             { edit: undo }
-    #         ]
-    #     }
-    # }
-    #
-    {
-      name: git_commit
-      modifier: control
-      keycode: char_m
-      mode: [ vi_insert ]
-      event: [
-        {
-          send: ExecuteHostCommand,
-          cmd: 'try { git commit } catch { ["git commit -a" quit] | input list --fuzzy $"(ansi lpr)what to do?(ansi reset)" | try { run-external ($in | split row " "); [no yes] | input list --fuzzy $"(ansi lpr)push?(ansi reset)" | (if $in == "yes" { git push }) } }'
-        }
-      ]
-    }
-    {
-      name: lazygit
-      modifier: shift_alt
-      keycode: char_g
-      mode: [ vi_insert ]
-      event: [
-        {
-          send: ExecuteHostCommand,
-          cmd: "lazygit"
-        }
-      ]
-    }
-    {
-      name: flutter_watch_run_no_pub
-      modifier: control
-      keycode: char_e
-      mode: [ vi_insert ]
-      event: [
-        {
-          send: ExecuteHostCommand,
-          cmd: "
-        const cmds_and_dir_markers = {
-        'dart run flutterwatch -d lib -r -- run --no-pub': [pubspec.yaml, pubspec.lock, .dart_tool],
-        'cargo run': [Cargo.toml, Cargo.lock],
-        'bun dev': [package.json, node_modules],
-        };
-
-        let dir_contents = (ls -a | get name);
-
-        $cmds_and_dir_markers
-        | transpose cmd dir_marker
-        | (
-        for row in $in { 
-        if ($row.dir_marker | all {|dm| $dm in $dir_contents }) {
-        run-external ( $row.cmd | split row ' ' );
-        return;
-        }
+  {
+    name: help_menu
+    modifier: control
+    keycode: char_f
+    mode: [emacs, vi_insert, vi_normal]
+    event: { send: menu name: help_menu }
+  },
+  {
+    name: change_completion_algorithm
+    modifier: control
+    keycode: char_a
+    mode: vi_insert
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "
+        $env.config.completions.algorithm = (
+        match $env.config.completions.algorithm {
+        'prefix' => 'fuzzy'
+        _ => 'prefix'
         }
         );
+        $env.PROMPT_INDICATOR_VI_INSERT = {||
+        match $env.config.completions.algorithm {
+        'fuzzy' => '🔭 '
+        _ => ': '
 
-        echo $'(ansi rb)cannot know the project type(ansi reset)';
-        "
         }
-      ]
-    }
-  ]
+        };
+        do $env.PROMPT_COMMAND;
+        "
+      },
+    ]
+  },
+  {
+    name: G
+    modifier: shift
+    keycode: char_g
+    mode: vi_normal
+    event: { edit: MoveToEnd }
+  },
+  {
+    name: gg
+    modifier: none
+    keycode: char_g
+    mode: vi_normal
+    event: { edit: MoveToStart }
+  },
+  {
+    name: zoxide_navigation
+    modifier: control
+    keycode: char_z
+    mode: vi_insert
+    event: [
+      { edit: MoveToLineStart },
+      {
+        edit: insertString,
+        value: "cdi "
+      },
+      { send: Enter }
+    ]
+  },
+  {
+    name: fzf
+    modifier: control
+    keycode: char_n # n for navigate
+    mode: [ vi_normal, vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "
+        fzf --height=10 --layout=reverse --border-label='cd' --walker=dir,hidden --preview='lstr -sGg -L 3 --icons {}'
+        | cd $in;
+        "
+      }
+    ]
+  },
+  {
+    name: pwd
+    modifier: control_shift
+    keycode: char_p # p for path
+    mode: [ vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "print (char nl);print -n ( pwd )"
+      }
+    ]
+  }
+  {
+    name: ls_a
+    modifier: control
+    keycode: char_p # p for path
+    mode: [ vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "print (char nl); ls -a"
+      }
+    ]
+  }
+  {
+    name: vars_menu
+    modifier: control
+    keycode: char_s # s for scope
+    mode: vi_insert
+    event: { send: menu name: vars_menu }
+  },
+  {
+    name: next_page_menu
+    modifier: control
+    keycode: char_x
+    mode: [emacs, vi_insert, vi_normal]
+    event: { send: menupagenext }
+  },
+  {
+    name: execute_project_run_command
+    modifier: control
+    keycode: char_e
+    mode: [ vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "
+          const cmds_and_dir_markers = {
+            'dart run flutterwatch -d lib -r -- run --no-pub': [pubspec.yaml, pubspec.lock, .dart_tool],
+            'cargo run': [Cargo.toml, Cargo.lock],
+            'bun dev': [package.json, node_modules],
+          };
+
+          let dir_contents = (ls -a | get name);
+
+          $cmds_and_dir_markers
+          | transpose cmd dir_marker
+          | (
+            for row in $in { 
+              if ($row.dir_marker | all {|dm| $dm in $dir_contents }) {
+                run-external ( $row.cmd | split row ' ' );
+                break;
+              }
+            }
+          );
+
+          echo $'(ansi rb)cannot know the project type(ansi reset)';
+        "
+      }
+    ]
+  }
+  {
+    name: test_project
+    modifier: control
+    keycode: char_t
+    mode: [ vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "
+          const cmds_and_dir_markers = {
+            'flutter test': [pubspec.yaml, pubspec.lock, .dart_tool],
+            'cargo test': [Cargo.toml, Cargo.lock],
+            'bun test': [package.json, node_modules],
+          };
+
+          let dir_contents = (ls -a | get name);
+          mut is_cmd_executed = false;
+
+          $cmds_and_dir_markers
+          | transpose cmd dir_marker
+          | (
+            for row in $in { 
+              if ($row.dir_marker | all {|dm| $dm in $dir_contents }) {
+                run-external ( $row.cmd | split row ' ' );
+                $is_cmd_executed = true;
+                break;
+              }
+            }
+          );
+
+          if not $is_cmd_executed {
+            echo $'(ansi rb)cannot know the project type(ansi reset)';
+          }
+        "
+      }
+    ]
+  }
+  {
+    name: jump_backward
+    modifier: control
+    keycode: char_i
+    mode: [ vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "jump backward"
+      }
+    ]
+  }
+  {
+    name: jump_forward
+    modifier: control
+    keycode: char_o
+    mode: [ vi_insert ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "jump forward"
+      }
+    ]
+  }
+  {
+    name: open_buffer_in_editor
+    modifier: control
+    keycode: char_m
+    mode: [ vi_insert vi_normal emacs ]
+    event: [ { send: OpenEditor } ]
+  }
+  {
+    name: clear_screen
+    modifier: control
+    keycode: char_v # v for view
+    mode: [ vi_insert vi_normal ]
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "clear -k"
+      }
+    ]
+  }
+  {
+    name: sm
+    modifier: control_shift
+    keycode: char_m
+    mode: [ vi_insert ]
+    event: [ 
+      {
+        edit: insertString,
+        value: "m a $env.session"
+      }
+      {
+        send: ExecuteHostCommand,
+        cmd: " try { m ls | lines | input list --fuzzy 'which one?' | split row ' '  | first | ( $env.session = ( $in | ansi strip ) )  } "
+      }
+
+      { send: Submit }
+    ]
+  }
+  {
+    name: which
+    modifier: control
+    keycode: char_x # from exec
+    mode: [ vi_insert ]
+    event: [ 
+      { edit: MoveToStart }
+      {
+        edit: insertString,
+        value: "which --all "
+      }
+      { send: Submit }
+    ]
+  }
+  {
+    name: leader_key
+    modifier: none
+    keycode: space
+    mode: [ vi_normal ]
+
+    event: [
+      {
+        send: ExecuteHostCommand,
+        cmd: "
+        input listen --types [key]
+        | (
+          match $in.code {
+          'e' => { y },
+          'g' => {
+            input listen --types [key]
+            | (
+              match $in.code {
+              'g' => { lz },
+              'm' => { try { git commit } catch { ['git commit -a' quit] | input list --fuzzy $'(ansi lpr)what to do?(ansi reset)' | try { run-external ($in | split row ' '); [no yes] | input list --fuzzy $'(ansi lpr)push?(ansi reset)' | (if $in == 'yes' { git push }) } } },
+              's' => { git status },
+              'p' => { git push },
+              'a' => { git add . },
+              _ => { ignore }
+              }
+            )
+
+          },
+          ' ' => { ignore; fzf | ^$env.EDITOR $in },
+          _ => { ignore }
+          }
+        )
+        "
+      }
+
+    ]
+
+  }
+]
