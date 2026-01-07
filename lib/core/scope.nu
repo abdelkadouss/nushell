@@ -52,3 +52,8 @@ use link.nu;
 
 # pkgx
 use pkgx_build.nu *;
+
+# jumps
+use jumps.nu [ 'jump backward' 'jump forward' 'jump cleanup' 'jump list' ];
+
+use clean.nu;

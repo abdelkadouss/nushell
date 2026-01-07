@@ -83,3 +83,9 @@ overlay hide path --keep-env [ PATH ];
 use tm.nu;
 tm;
 hide "tm";
+
+# jumps
+use jumps.nu 'jump hooks';
+jump hooks cleanup; # cleanup the jumps files
+jump hooks init; # cleanup the jumps files
+hide 'jump hooks';

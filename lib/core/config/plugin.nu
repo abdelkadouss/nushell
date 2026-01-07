@@ -11,6 +11,21 @@ $env.config.plugins = {
       keys: ~/.config/nushell/lib/core/config/keymapping.nuon
     }
   },
+  jumps: {
+    backward_file: ('/tmp/nu' | path join ".nu.jumps.backward")
+    forward_file: ('/tmp/nu' | path join ".nu.jumps.forward")
+  }
+  clean: {
+    commands: [
+      {|| sudo -S pkg clean }
+      {||
+        use jumps.nu 'jump cleanup';
+        jump cleanup;
+
+      }
+      {|| brew cleanup } # :MACOS:
+    ]
+  }
   nupm: {
     NUPM_PACKAGE_DECLARATION_FILE_PATH: (
       $env.NU_CONFIG_DIR
