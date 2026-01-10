@@ -120,6 +120,11 @@ module editor {
   }
 }
 
+# HACK: add this to the main cmd as complation like so if u wanna use it: ...files: string@history-edits
+# def history-edits [] {
+#   history  | get command | where {|cmd| $cmd | str starts-with 'e ' } | str substring 1.. | str trim | uniq
+# }
+
 export def --wrapped main [
   --fzf(-f)
   --zoxide(-z)

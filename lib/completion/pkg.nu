@@ -1,4 +1,14 @@
 def commands [] { [] };
+def pkgs [] {
+  kdlc --arg1=input ($env.XDG_CONFIG_HOME)/pkg/.config.kdl 
+  | from json
+  | get config
+  | get db
+  | get path
+  | open ( $in | path expand --no-symlink )
+  | get packages
+  | get name
+}
 
 
 # a portbale, multi repo, cross platform, rust base, scriptable package manager 
@@ -35,13 +45,13 @@ extern "pkg rebuild" [
 }
 extern "pkg update" [
   --help(-h),                                 # Prints help information
-  pkgs?: string # list of packages to update (default: all)
+  pkgs?: string@pkgs # list of packages to update (default: all)
 ]
 
 # List installed packages
 extern "pkg info" [
   --help(-h),                                 # Prints help information
-  pkgs?: string # list of packages to show info about (default: all)
+  pkgs?: string@pkgs # list of packages to show info about (default: all)
 ]
 
 # Link packages in PATH 
