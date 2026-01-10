@@ -57,7 +57,7 @@ let fzf = {
 }
 
 let bat = {
-  BAT_THEME: "Catppuccin Mocha"
+  BAT_THEME: "Rose-Pine"
 }
 
 

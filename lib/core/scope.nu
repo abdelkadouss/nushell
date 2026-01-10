@@ -57,3 +57,6 @@ use pkgx_build.nu *;
 use jumps.nu [ 'jump backward' 'jump forward' 'jump cleanup' 'jump list' ];
 
 use clean.nu;
+
+# theme
+use theme.nu *;

@@ -18,9 +18,8 @@ $env.config.hooks = {
   display_output: "if (term size).columns >= 100 { table -e } else { table }" # run to display the output of a pipeline
   command_not_found: {|cmd|
     if ($cmd | path type) == 'file' {
-      ^$env.PAGER $cmd;
-      return $'the file just opened via ( $env.PAGER )'
+      let path = ( $cmd | path expand --no-symlink );
+      ^$env.PAGER $path;
     } else { return null };
-    return
   } # return an error message when a command is not found
 }

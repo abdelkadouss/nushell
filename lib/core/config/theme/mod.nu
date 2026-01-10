@@ -8,10 +8,11 @@ overlay new theme;
 overlay use theme;
 
 use update_terminal.nu "update terminal";
-use themes/catppuccin_mocha.nu;
+# use themes/catppuccin_mocha.nu;
 
 # set the theme
-catppuccin_mocha set color_config;
+# catppuccin_mocha set color_config;
+source gen/theme_change_hook.nu
 
 # override the default theme
 $env.config.color_config.background = "#000000";
