@@ -36,6 +36,8 @@ in the following script and then run it:
 const TARGET_DIR = '<set-where-to-install>/nupm'
 let target_dir = ( $TARGET_DIR | path expand --no-symlink );
 
+mkdir $target_dir;
+
 http get https://api.github.com/repos/abdelkadouss/nushell/contents/lib/modules/nupm
 | get name url
 | each {|file|
@@ -52,15 +54,17 @@ http get https://api.github.com/repos/abdelkadouss/nushell/contents/lib/modules/
 const DEPENDENCIES_TARGET_DIR = '<set-where-to-install-dependencies>'
 let target_dir = ( $DEPENDENCIES_TARGET_DIR | path expand --no-symlink );
 
-http get https://api.github.com/repos/abdelkadouss/nushell/contents/lib/shared/environment.nu
+mkdir ($target_dir)/shared;
+
+http get 'https://api.github.com/repos/abdelkadouss/nushell/contents/lib/shared/environment.nu'
 | get name url
 | (
-    http get $url
+    http get $in.url
     | save (
         [
             $target_dir
             shared # it's should be in dir called shared
-            $name
+            $in.name
         ] | path join
     )
 )
