@@ -21,7 +21,16 @@ first make sure u running the latest version of nushell.
 
 ### Install
 
-set the `TARGET_DIR` variable to where you want to install the package manager (this module), then run the following command:
+set the `TARGET_DIR` variable to where you want to install the package manager (this module) and `DEPENDENCIES_TARGET_DIR` variable to wher to store the dependencies of the module and this two lines in the bottom:
+
+```nu
+...
+    ( <DEPENDENCIES_TARGET_DIR value u wrote above> | path expand --no-symlink ), # <- this one
+    ( <TARGET_DIR value u wrote above> | path expand --no-symlink ) # <- and this one
+...
+```
+
+in the following script and then run it:
 
 ```nu
 const TARGET_DIR = '<set-where-to-install>/nupm'
