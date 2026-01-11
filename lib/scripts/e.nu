@@ -1,3 +1,14 @@
+### README:
+
+# * this script depends on external utilities, make sure to copy from ../shared/external/ ; look as the use line bellow
+# * this script depends on some external utilities, which are  [ "fzf", "zoxide" ] make sure to install theme before use
+# for usage info run: help e
+# the script uses the env var EDITOR as the editor to use, make sure to set it before use. tested with: nvim, vim, hx
+# the script accepts config options can be seted in $env.config.plugins.e env var, which is next:
+# ** alias: a word reference to path. type: record<string, string>. example: alias: { "shell": "~/.config/nushell/config.nu" }
+
+###
+
 use ../shared/external *;
 
 const FZF_DEFAULT_OPTS = [
@@ -125,12 +136,38 @@ module editor {
 #   history  | get command | where {|cmd| $cmd | str starts-with 'e ' } | str substring 1.. | str trim | uniq
 # }
 
+# this script gonna insha'Allah jumps to dirs or files and open the editor in base on a query u pass. It try to read the current dir contiants + the dirs u visetd in the past (using zoxide) and fuzzy finding via fzf. So it's gonna insha'Allah jump directly to project/file u wannat in smart way insha'Allah.
+@example 'open a project u visetd in the past via zoxide' {
+  cd ~/.config/nushell/;
+  cd;
+  e nushell;
+}
+@example 'open specific file a project u visetd in the past via zoxide' {
+  cd ~/.config/nushell/;
+  cd;
+  e nushell lib scripts e.nu;
+}
+@example 'open a file in the current dir via fzf' {
+  e --fzf some_file;
+}
+@example 'open project from ur zoxide history' {
+  e --zoxide; # or
+  e --zoxide some_project;
+}
+@example 'open a file ur alais' {
+  $env.config.plugins.e.alias.shell = "~/.config/nushell/config.nu";
+  mkdir shell;
+  cd shell;
+  cd -;
+  e shell; # it's should open ~/.config/nushell/config.nu insha'Allah.
+}
+@search-terms 'open' 'edit' 'open file'
 export def --wrapped main [
-  --fzf(-f)
-  --zoxide(-z)
-  --new(-n)
-  --as-admin(-a)
-  ...files: string
+  --fzf(-f) # open with fzf
+  --zoxide(-z) # open file/dir form zoxide history
+  --new(-n) # make the file if not exists
+  --as-admin(-a) # run as root
+  ...files: string # files/dir query to open
 ] {
   if $as_admin { $env.dev.as_admin = true };
 

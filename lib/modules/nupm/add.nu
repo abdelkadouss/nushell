@@ -1,4 +1,4 @@
-use ../../shared/environment.nu *;
+use shared/environment.nu *;
 
 use installer.nu *;
 use declare.nu 'plugin declare';

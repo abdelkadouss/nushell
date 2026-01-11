@@ -1,5 +1,5 @@
-use ../../shared/environment.nu *;
-use ./app_config.nu *;
+use shared/environment.nu *;
+use app_config.nu *;
 
 # clean installation tmps
 export def 'nupm clean' [] {

@@ -1,4 +1,4 @@
-use ../../shared/environment.nu *;
+use shared/environment.nu *;
 
 const PKG_TYPES = [
   'bin'
@@ -74,7 +74,7 @@ export module install {
   }
 
   export def git_script_or_module [
-    pkg_repo_and_file_name: string # SYNTAX: <pkg repo>*<path/to/file/to/store>
+    pkg_repo_and_file_name: string # SYNTAX: <pkg repo>*<path/to/file/to/store>*<renamed file name>(the last one is optional)
     pkg_type: string
   ] {
     if not ( $pkg_type in $PKG_TYPES ) {
@@ -90,10 +90,14 @@ export module install {
       $pkg_parse
       | get 0
     );
-    mut pkg_name = (
+    mut pkg_script_path = (
       $pkg_parse
       | get 1
     );
+    mut pkg_name = (
+      $pkg_script_path
+      | path basename
+    )
     let pkg_rename = (
       $pkg_parse
       | get -o 2
@@ -105,12 +109,12 @@ export module install {
     mut pkg_path = (
       [
         $tmp_dir
-        $pkg_name
+        $pkg_script_path
       ] | path join
     );
 
     if not ( $pkg_path | path exists ) {
-      panic $"No script found with name ( $pkg_name ) in ( $pkg_repo_url )"
+      panic $"No script ( $pkg_script_path ) in ( $pkg_repo_url )"
 
     }
 
@@ -141,7 +145,7 @@ export module install {
     print $"(ansi gb)add this to ur config:(ansi reset)\n(ansi p)```nu(ansi reset)\n($use_cmd_string)\n(ansi p)```(ansi reset)";
 
     return {
-      name: $pkg_name
+      name: $pkg_script_path
       repo: $pkg_repo_and_file_name
       path: $pkg_path
       pkg_type: $pkg_type

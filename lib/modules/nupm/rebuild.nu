@@ -1,4 +1,4 @@
-use ../../shared/environment.nu *;
+use shared/environment.nu *;
 
 use declare.nu 'plugin undeclare';
 use add.nu 'nupm add';

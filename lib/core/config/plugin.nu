@@ -208,10 +208,6 @@ $env.config.plugins = {
       $env.NU_CONFIG_DIR
       | path join "plugins.toml"
     ),
-    NUPM_BIN_DECLARATION_FILE_PATH: (
-      $env.NU_CONFIG_DIR
-      | path join "plugins.toml"
-    ),
     NUPM_DIST_PATH: ($env.NU_DATA_DIR | path join "nupm"),
     NUPM_HOME: ($env.NU_DATA_DIR | path join "nupm"),
   },

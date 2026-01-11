@@ -1,4 +1,4 @@
-use ../../shared/environment.nu *;
+use shared/environment.nu *;
 
 use app_config.nu *;
 

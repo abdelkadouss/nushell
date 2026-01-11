@@ -11,7 +11,8 @@ $env.ANDROID_SDK_ROOT = ( $env.ANDROID_HOME  | path dirname );
 $env.NDK_HOME = ( $env.ANDROID_HOME | path join "ndk" );
 $env.ANDROID_AVD_HOME = ( $env.XDG_CONFIG_HOME | path join ".android/avd" );
 
-
+## the salat script config
+source ~/.env/nu/salat.nu;
 
 ## config
 
