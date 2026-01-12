@@ -1,6 +1,4 @@
-use shared/environment.nu *;
-
-use app_config.nu *;
+use runtime.nu *;
 
 const PKG_TYPES = [
   'bin',
@@ -13,9 +11,11 @@ export def "plugin declare" [
     path: string,
     pkg_type: string
 ] {
-  config check;
+  runtime check;
 
-  let plugins_declaration_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
+  let plugins_declaration_file = (
+    runtime info | get plugins_declaration_file
+  );
 
   let new_declaration = (
     open $plugins_declaration_file
@@ -34,9 +34,9 @@ export def "plugin undeclare" [
   pkg_name: string
   pkg_type: string
 ] {
-  config check;
+  runtime check;
 
-  let plugins_declaration_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
+  let plugins_declaration_file = ( runtime info | get plugins_declaration_file );
 
   if not ( $pkg_type in $PKG_TYPES ) {
     panic $"Unknown package type: ( $pkg_type )"

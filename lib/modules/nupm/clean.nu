@@ -1,11 +1,10 @@
-use shared/environment.nu *;
-use app_config.nu *;
+use runtime.nu *;
 
 # clean installation tmps
 export def 'nupm clean' [] {
-  config check;
+  runtime check;
 
-  let tmp_dir = env exists --panic --return-value $.config.plugins.nupm.NUPM_TMP_DIR;
+  let tmp_dir = ( runtime info | get tmp_dir );
 
   rm -rfp $tmp_dir;
 

@@ -15,3 +15,6 @@ export use load.nu *;
 
 # clean installation tmps
 export use clean.nu *;
+
+# make a new config file
+export use new.nu *;

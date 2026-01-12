@@ -1,12 +1,10 @@
-use shared/environment.nu *;
-
-use app_config.nu *;
+use runtime.nu *;
 
 # load the plugins
 export def "nupm load" [] {
-  config check;
+  runtime check;
 
-  let plugins_declaration_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
+  let plugins_declaration_file = ( runtime info | get plugins_declaration_file );
 
   let plugins_bin = (
     open $plugins_declaration_file

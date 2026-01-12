@@ -3,17 +3,23 @@ use shared/environment.nu *;
 use installer.nu *;
 use declare.nu 'plugin declare';
 use config.nu 'config write';
+use runtime.nu [ 'runtime info' 'runtime check' ];
 
-use app_config.nu *;
+const SIT = [ # SUPPORTED_INSTALLATION_TYPES
+  'cargo-git',
+  'crate',
+  'git-module',
+  'git-script'
+];
 
 # install a plugin
 export def 'nupm add' [
   pkg_repo: string,
-  installation_type: string
+  installation_type: string@$SIT
 ] {
-  config check;
+  runtime check;
 
-  let dist_paht = env exists --panic --return-value $.config.plugins.nupm.NUPM_DIST_PATH;
+  let dist_paht = ( runtime info | get dist_path );
 
   match $installation_type {
     'cargo-git' => {|| install cargo_git $pkg_repo },

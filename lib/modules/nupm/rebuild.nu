@@ -1,24 +1,24 @@
-use shared/environment.nu *;
-
 use declare.nu 'plugin undeclare';
 use add.nu 'nupm add';
-
-use app_config.nu *;
+use runtime.nu *;
 
 # install the plugins based on the declaration file
 export def "nupm rebuild" [
   packages?: list
+  --global(-g) # rebuild the packages from the global config
+  --if-not-exists(-i) # dont rebuild the package if already installed
 ] {
-  config check;
+  runtime check;
 
-  let input_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH;
+  let input_file = (
+    if $global {
+      ( runtime info --override-type "GLOBAL" | get packages_declaration_file );
 
-  let plugins_declaration_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
+    } else {
+      ( runtime info | get packages_declaration_file );
 
-  let plugins_declaration = (
-    open $plugins_declaration_file
-    | get -o packages
-  )
+    }
+  );
 
   let plugins = (
     open $input_file
@@ -32,16 +32,27 @@ export def "nupm rebuild" [
   );
 
   for plugin in $plugins {
+    let plugin_info = (
+      find path-and-type $plugin.name
+    );
+
+    if (
+      $plugin_info.path?
+      | is-not-empty
+    ) and (
+      $plugin_info.path
+      | path exists
+    ) and ($if_not_exists ) { continue };
+
     print $"(ansi bb) ($plugin.name): (ansi reset)";
 
-    print $"\t🗑️:";
     try {
-      rm -rfp $plugins_declaration
-      | get $plugin.info.pkg_type
-      | get $plugin.name
-      | rm -rfp $in.path;
+      print $"\t🗑️:";
+      rm -rfp $plugin_info.path;
 
-      plugin undeclare $plugin.name $plugin.info.pkg_type;
+      print $"(ansi rb)\t- ($plugin.name)(ansi reset)";
+
+      plugin undeclare $plugin.name $plugin_info.type;
 
     }
 
@@ -51,8 +62,8 @@ export def "nupm rebuild" [
       print $"Done, thank's to Allah 🌻";
 
     } catch {|err|
-      print $"(ansi rb) Error:(ansi reset)";
-      $err
+      print $err.rendered;
+      
     }
 
   };
@@ -60,3 +71,28 @@ export def "nupm rebuild" [
   print $"(ansi gb) It's all done, thank's to Allah 🌻(ansi reset)";
 
 };
+
+def 'find path-and-type' [
+  pkg_name: string
+] {
+  let plugins_declaration_file = (
+    runtime info | get plugins_declaration_file
+  );
+
+  for type in [ 'bin' 'module' 'script' ] {
+    open $plugins_declaration_file
+    | get -o $type
+    | default [ ]
+    | transpose name path
+    | where name == $pkg_name
+    | (
+      if ( $in | is-not-empty ) {
+        return {
+          type: $type
+          path: ( $in | first | get path )
+        }
+        break;
+      }
+    )
+  }
+}

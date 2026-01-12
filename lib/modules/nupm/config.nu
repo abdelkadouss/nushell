@@ -1,9 +1,7 @@
-use shared/environment.nu *;
-
-use app_config.nu *;
+use runtime.nu *;
 
 export def "config read" [] {
-  let input_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH;
+  let input_file = ( runtime info | get packages_declaration_file );
 
   return ( open $input_file | get -o packages );
 
@@ -16,9 +14,9 @@ export def "config write" [
         type: string
   >
 ] {
-  config check;
+  runtime check;
 
-  let target_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH;
+  let target_file = ( runtime info | get packages_declaration_file );
 
   open $target_file
   | get -o packages
@@ -36,9 +34,9 @@ export def "config write" [
 export def "config remove" [
   pkg_name: string
 ] {
-  config check;
+  runtime check;
 
-  let target_file = env exists --panic --return-value $.config.plugins.nupm.NUPM_PACKAGE_DECLARATION_FILE_PATH;
+  let target_file = ( runtime info | get packages_declaration_file );
 
   open $target_file
   | get -o packages

@@ -1,4 +1,4 @@
-use shared/environment.nu *;
+use runtime.nu *;
 
 const PKG_TYPES = [
   'bin'
@@ -10,7 +10,7 @@ export module install {
   export def cargo_git [
     pkg_repo: string
   ] {
-    let tmp_dir = env exists --panic --return-value $.config.plugins.nupm.NUPM_TMP_DIR;
+    let tmp_dir = ( runtime info | get tmp_dir );
     let tmp_dir = ( mktemp --directory --tmpdir-path $tmp_dir );
 
     cargo install --git $pkg_repo --root $tmp_dir;
@@ -46,9 +46,9 @@ export module install {
   export def crate [
     pkg_name: string
   ] {
-    let dist_paht = env exists --panic --return-value $.config.plugins.nupm.NUPM_DIST_PATH;
+    let dist_paht = ( runtime info | get dist_path );
 
-    let tmp_dir = env exists --panic --return-value $.config.plugins.nupm.NUPM_TMP_DIR;
+    let tmp_dir = ( runtime info | get tmp_dir );
     let tmp_dir = ( mktemp --directory --tmpdir-path $tmp_dir );
 
     cargo install $pkg_name --root $tmp_dir;
@@ -82,7 +82,7 @@ export module install {
 
     };
 
-    let tmp_dir = env exists --panic --return-value $.config.plugins.nupm.NUPM_TMP_DIR;
+    let tmp_dir = ( runtime info | get tmp_dir );
     let tmp_dir = ( mktemp --directory --tmpdir-path $tmp_dir );
 
     let pkg_parse = ( $pkg_repo_and_file_name | split row "*" );

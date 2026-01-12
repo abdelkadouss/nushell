@@ -1,17 +1,15 @@
-use shared/environment.nu *;
-
 use declare.nu 'plugin undeclare';
 use config.nu 'config remove';
 
-use app_config.nu *;
+use runtime.nu *;
 
 # remove a plugin
 export def "nupm remove" [
   pkg_name: string
 ] {
-  config check;
+  runtime check;
 
-  let plugin_declaration = env exists --panic --return-value config.plugins.nupm.NUPM_PLUGINS_DECLARATION_FILE_PATH;
+  let plugin_declaration = ( runtime info | get plugins_declaration_file );
 
   open $plugin_declaration
   | transpose type pkgs
