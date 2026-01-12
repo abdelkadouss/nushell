@@ -8,9 +8,13 @@ this is a write from scratc it's not a fork of nushell-package-manager
 
 ## Demo
 
-[![video](https://api.github.com/repos/abdelkadouss/nushell/contents/lib/modules/nupm/examples/res/global.webm?ref=main)]
+### Global plugins managment
 
-[![video](https://api.github.com/repos/abdelkadouss/nushell/contents/lib/modules/nupm/examples/res/module.webm?ref=main)]
+![global pm demo](lib/modules/nupm/examples/res/global.webm]
+
+### Dependency managment for modules
+
+![module pm demo](lib/modules/nupm/examples/res/module.webm]
 
 ## Why? - Features
 
@@ -20,6 +24,7 @@ The official one still not really usable for me, plus this has a few cool featur
 - 📦 Supports scripts, rust plugins, and modules.
 - 📝 Save the installed plugins in a file, so you can install them again later insha'Allah via one command using just one file.
 - 🕹️ Install, update and remove support.
+- 🔌 Supports dependency managment for modules.
 
 ## Setup
 
