@@ -6,6 +6,12 @@
 
 this is a write from scratc it's not a fork of nushell-package-manager
 
+## Demo
+
+[![video](https://api.github.com/repos/abdelkadouss/nushell/contents/lib/modules/nupm/examples/res/global.webm?ref=main)]
+
+[![video](https://api.github.com/repos/abdelkadouss/nushell/contents/lib/modules/nupm/examples/res/module.webm?ref=main)]
+
 ## Why? - Features
 
 The official one still not really usable for me, plus this has a few cool features:
