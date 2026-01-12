@@ -26,10 +26,10 @@ type = "cargo-git"
 repo = "https://github.com/yh17549/nu-dir-bookmark.git*bookmark_for_dir.nu"
 type = "git-script"
 
-[packages."nufmt.nu"]
-repo = "https://github.com/blindFS/topiary-nushell.git*format.nu*nufmt.nu"
-type = "git-script"
-
 [packages.nutest]
 repo = "https://github.com/vyadh/nutest.git*nutest"
 type = "git-module"
+
+[packages."format.nu"]
+repo = "https://github.com/blindFS/topiary-nushell.git*format.nu*nufmt.nu"
+type = "git-script"
