@@ -1,4 +1,4 @@
-Output examples/res/demo.webm
+Output examples/res/global.gif
 
 Set Shell "nu"
 Set FontSize 32

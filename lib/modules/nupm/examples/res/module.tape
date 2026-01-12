@@ -1,4 +1,4 @@
-Output examples/res/module.webm
+Output examples/res/module.gif
 
 Set Shell "nu"
 Set FontSize 28
