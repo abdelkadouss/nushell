@@ -10,15 +10,13 @@ export def "nupm rebuild" [
 ] {
   runtime check;
 
-  let input_file = (
-    if $global {
-      ( runtime info --override-type "GLOBAL" | get packages_declaration_file );
+  if $global {
+    $env.OVERRIDE_RUNTIME_TYPE_GLOBAL = true;
+  }
 
-    } else {
-      ( runtime info | get packages_declaration_file );
+  let input_file = ( runtime info | get packages_declaration_file );
 
-    }
-  );
+  print $" (ansi gb)Using: (ansi bu)( $input_file )(ansi reset)";
 
   let plugins = (
     open $input_file
@@ -27,7 +25,7 @@ export def "nupm rebuild" [
     | (
       let all_packages = $in.name;
       $in
-      | where {|pkg| $pkg.name in ( $packages | default $all_packages)}
+      | where {|pkg| $pkg.name in ( $packages | default $all_packages) }
     )
   );
 
@@ -42,14 +40,14 @@ export def "nupm rebuild" [
     ) and (
       $plugin_info.path
       | path exists
-    ) and ($if_not_exists ) { continue };
+    ) and ( $if_not_exists ) { continue };
 
     print $"(ansi bb) ($plugin.name): (ansi reset)";
 
     try {
-      print $"\t🗑️:";
       rm -rfp $plugin_info.path;
 
+      print $"\t🗑️:";
       print $"(ansi rb)\t- ($plugin.name)(ansi reset)";
 
       plugin undeclare $plugin.name $plugin_info.type;
@@ -59,7 +57,7 @@ export def "nupm rebuild" [
     print $"\t🚚📦:";
     try {
       nupm add $plugin.info.repo $plugin.info.type;
-      print $"Done, thank's to Allah 🌻";
+      print $"(ansi gb) Done, thank's to Allah 🌻(ansi reset)";
 
     } catch {|err|
       print $err.rendered;

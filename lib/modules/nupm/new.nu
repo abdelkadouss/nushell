@@ -1,6 +1,7 @@
 use runtime.nu DEFAULT_LOCAL_MODULE_CONFIG_FILE_RELATIVE_PATH;
 
-const DEFAULT_EMPTY_CONFIG: string = "
+export def "nupm new" [] {
+  let DEFAULT_EMPTY_CONFIG: string = $"
 {
   name: ( pwd | path basename )
   description: 'nushell plugin'
@@ -12,7 +13,6 @@ const DEFAULT_EMPTY_CONFIG: string = "
 }
 "
 
-export def "nupm new" [] {
   try {
     $DEFAULT_EMPTY_CONFIG
     | save $DEFAULT_LOCAL_MODULE_CONFIG_FILE_RELATIVE_PATH;

@@ -21,15 +21,19 @@ export def "nupm remove" [
         rm -rfp $in;
         plugin undeclare $pkg_name $pkgs_stuck.type;
         config remove $pkg_name;
-        print $"Done, thank's to Allah 🌻";
-        return;
+        print $"(ansi gb) Done, thank's to Allah 🌻(ansi reset)";
+        return true;
 
       };
 
     );
 
-  };
+  } | any {|it| $it }
+  | (
+    if not $in {
+      print $"(ansi rb) No plugin found for ( $pkg_name )(ansi reset)";
 
-  print $"(ansi rb) No plugin found for ( $pkg_name )(ansi reset)";
+    }
+  );
 
 };

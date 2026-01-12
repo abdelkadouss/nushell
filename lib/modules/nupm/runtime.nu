@@ -44,18 +44,19 @@ export def "runtime check" [] {
 
 };
 
-export def 'runtime type' [ ] {
+export def --env 'runtime type' [ ] {
   if (
     $DEFAULT_LOCAL_MODULE_CONFIG_FILE_RELATIVE_PATH
     | path exists
+  ) and not (
+    $env.OVERRIDE_RUNTIME_TYPE_GLOBAL?
+    | default false
   ) { "MODULE" } else { "GLOBAL" }
 
 }
 
-export def "runtime info" [
-  --override-type(-t): string # override the runtime type [GLOBAL|MODULE]
-]: nothing -> record {
-  let runtime_type: string = $override_type | default { runtime type };
+export def "runtime info" --env [ ]: nothing -> record {
+  let runtime_type: string = ( runtime type );
 
   match $runtime_type {
     "GLOBAL" => {
