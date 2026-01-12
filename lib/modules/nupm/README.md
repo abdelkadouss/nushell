@@ -10,11 +10,11 @@ this is a write from scratc it's not a fork of nushell-package-manager
 
 ### Global plugins managment
 
-[![global pm demo](lib/modules/nupm/examples/res/global.webm)](lib/modules/nupm/examples/res/global.webm)
+![global pm demo](examples/res/global.webm)
 
 ### Dependency managment for modules
 
-[![module pm demo](lib/modules/nupm/examples/res/module.webm)](lib/modules/nupm/examples/res/module.webm)
+![module pm demo](examples/res/module.webm)
 
 ## Why? - Features
 
