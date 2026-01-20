@@ -60,3 +60,6 @@ use clean.nu;
 
 # theme
 use theme.nu *;
+
+# copy and paste files
+use copy_paste.nu *;
