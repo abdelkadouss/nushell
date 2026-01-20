@@ -16,30 +16,29 @@ const IGNORED_ALIAS = [ "as admin" ];
 }
 export def "as admin" [ cmd: closure ] {
   # check if nu in the path
-  external exist --panic true [ "nu" ];
+  external exist --panic true [ nu ];
 
   if not (is-admin) {
     if not ($nu.env-path | nu-check) or not ($nu.config-path | nu-check) { panic "u have an issue in ur config" };
 
     # make the scope ready to source in Chaa'Allah
-    mut to_remove_files = [];
+    mut to_remove_files = [ ];
 
-    let var_scope_file = ( mktemp --suffix .nu --tmpdir-path /tmp );
-    let customs_scope_file = ( mktemp --suffix .nu --tmpdir-path /tmp );
-    let module_scope_file = ( mktemp --suffix .nu --tmpdir-path /tmp );
-    let alias_scope_file = ( mktemp --suffix .nu --tmpdir-path /tmp );
+    let var_scope_file = (mktemp --suffix .nu --tmpdir-path /tmp);
+    let customs_scope_file = (mktemp --suffix .nu --tmpdir-path /tmp);
+    let module_scope_file = (mktemp --suffix .nu --tmpdir-path /tmp);
+    let alias_scope_file = (mktemp --suffix .nu --tmpdir-path /tmp);
 
-    $to_remove_files = ( $to_remove_files | append $var_scope_file );
-    $to_remove_files = ( $to_remove_files | append $customs_scope_file );
-    $to_remove_files = ( $to_remove_files | append $module_scope_file );
-    $to_remove_files = ( $to_remove_files | append $alias_scope_file );
-
+    $to_remove_files = ($to_remove_files | append $var_scope_file);
+    $to_remove_files = ($to_remove_files | append $customs_scope_file);
+    $to_remove_files = ($to_remove_files | append $module_scope_file);
+    $to_remove_files = ($to_remove_files | append $alias_scope_file);
 
     let var_scope = (
       scope variables
       | (
         $in
-        | where {|var|
+        | where { |var|
           not (
             $var.name in $IGNORED_VARS
           )
@@ -48,7 +47,7 @@ export def "as admin" [ cmd: closure ] {
     );
 
     for var in $var_scope {
-      $"let ($var.name) = ( $var.value | to nuon --serialize );(char nl)"
+      $"let ($var.name) = ($var.value | to nuon --serialize);(char nl)"
       | save --append $var_scope_file
 
     }
@@ -60,7 +59,7 @@ export def "as admin" [ cmd: closure ] {
     );
 
     for custom in $customs {
-      let code = ( view source ($custom) );
+      let code = (view source ($custom));
       let code = $"($code)(char nl)";
 
       $code
@@ -70,8 +69,8 @@ export def "as admin" [ cmd: closure ] {
 
     for module in (scope modules) {
       if ($module.file | path exists) and ($module.file | nu-check) {
-        let module_tmp_file = ( mktemp --suffix .nu --tmpdir-path /tmp );
-        $to_remove_files = ( $to_remove_files | append $module_tmp_file );
+        let module_tmp_file = (mktemp --suffix .nu --tmpdir-path /tmp);
+        $to_remove_files = ($to_remove_files | append $module_tmp_file);
 
         open --raw $module.file
         | save -f $module_tmp_file;
@@ -86,12 +85,11 @@ export def "as admin" [ cmd: closure ] {
 
     let alias_scope = (
       scope aliases
-      | where {|alias|
+      | where { |alias|
         not (
           $alias.name in $IGNORED_ALIAS
         )
       }
-
     );
 
     for alias in $alias_scope {
@@ -100,7 +98,7 @@ export def "as admin" [ cmd: closure ] {
 
     };
 
-    if not ( $var_scope_file | nu-check ) {
+    if not ($var_scope_file | nu-check) {
       panic "oh unexpected issue in makeing the scope file that used to include scope in Chaa'Allah";
     }
 
@@ -109,7 +107,7 @@ export def "as admin" [ cmd: closure ] {
       $cmd
       | to nuon --serialize
       | str substring 1..(
-        ( $in | str length ) - 2
+        ($in | str length) - 2
       )
     );
 

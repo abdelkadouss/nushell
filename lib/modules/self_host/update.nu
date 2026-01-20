@@ -3,8 +3,8 @@ use ../../shared/external *;
 use data_path.nu get_data_path;
 use start.nu apps;
 
-export def "self host update" [app_name: string@apps] {
-  external exist --panic true [ "colima", "docker" ];
+export def "self host update" [ app_name: string@apps ] {
+  external exist --panic true [ colima docker ];
 
   let data_path = (get_data_path);
 
@@ -42,9 +42,9 @@ export def "self host update" [app_name: string@apps] {
     "custom" => {
       nu (
         [
-          $data_path,
-          ".self_host_custom_host_script",
-          $app_name ,
+          $data_path
+          ".self_host_custom_host_script"
+          $app_name
           $"($app_name).nu"
         ] | path join
       ) update

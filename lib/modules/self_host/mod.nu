@@ -12,11 +12,11 @@ export use update.nu *;
 export use state_manager.nu "self host list";
 
 export def "self host" [
-  path: string,
-  app_name: string,
-  --custom-host-script(-c): string = "default",
+  path: string
+  app_name: string
+  --custom-host-script (-c): string = "default"
 ] {
-  external exist --panic true [ "colima", "docker" ];
+  external exist --panic true [ colima docker ];
 
   if not ($path | path exists) {
     error make {
@@ -69,9 +69,9 @@ export def "self host" [
     export-env {
       nu (
         [
-          $data_path,
-          ".self_host_custom_host_script",
-          $app_name,
+          $data_path
+          ".self_host_custom_host_script"
+          $app_name
           $"($app_name).nu"
         ] | path join
       ) start

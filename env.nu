@@ -1,29 +1,29 @@
 let xdg = {
-  XDG_CONFIG_HOME: ($env.HOME | path join ".config")
-  XDG_DATA_HOME: ($env.HOME | path join ".local/share")
-  XDG_CACHE_HOME: ($env.HOME | path join ".cache")
+  XDG_CONFIG_HOME: ($env.HOME | path join .config)
+  XDG_DATA_HOME: ($env.HOME | path join .local/share)
+  XDG_CACHE_HOME: ($env.HOME | path join .cache)
 };
 
 $xdg | load-env
 
 let nu_vars = {
-  NU_CONFIG_DIR: ($env.XDG_CONFIG_HOME | path join "nushell")
-  NU_DATA_DIR: ($env.XDG_DATA_HOME | path join "nushell")
+  NU_CONFIG_DIR: ($env.XDG_CONFIG_HOME | path join nushell)
+  NU_DATA_DIR: ($env.XDG_DATA_HOME | path join nushell)
 }
 
 $nu_vars | load-env
 
 let nushell = {
   NU_LIB_DIRS: [
-    ( $env.NU_CONFIG_DIR | path join 'lib' )
-    ( $env.NU_CONFIG_DIR | path join 'lib/scripts' )
-    ( $env.NU_CONFIG_DIR | path join 'lib/modules' )
-    ( $env.XDG_DATA_HOME | path join 'completions' )
+    ($env.NU_CONFIG_DIR | path join lib)
+    ($env.NU_CONFIG_DIR | path join lib/scripts)
+    ($env.NU_CONFIG_DIR | path join lib/modules)
+    ($env.XDG_DATA_HOME | path join completions)
     $env.NU_DATA_DIR
   ]
   # Directories to search for plugin binaries when calling register
   NU_PLUGIN_DIRS: [
-    ( $env.XDG_DATA_HOME | path join 'nupm/bin' )
+    ($env.XDG_DATA_HOME | path join nupm/bin)
   ]
 }
 
@@ -32,20 +32,20 @@ let nushell = {
 # - converted from a value back to a string when running external commands (to_string)
 # Note: The conversions happen *after* config.nu is loaded
 $env.ENV_CONVERSIONS = {
-    "PATH": {
-        from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
-        to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
-    }
-    "Path": {
-        from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
-        to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
-    }
+  PATH: {
+    from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
+    to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
+  }
+  Path: {
+    from_string: { |s| $s | split row (char esep) | path expand --no-symlink }
+    to_string: { |v| $v | path expand --no-symlink | str join (char esep) }
+  }
 }
 
 let tools = {
-  EDITOR: 'nvim'
-  BROWSER: 'qutebrowser'
-  PAGER: 'bat'
+  EDITOR: nvim
+  BROWSER: qutebrowser
+  PAGER: bat
 }
 
 let carapace = {
@@ -57,63 +57,62 @@ let fzf = {
 }
 
 let bat = {
-  BAT_THEME: "Rose-Pine"
+  BAT_THEME: Catppuccin-Mocha
 }
 
-
 let bun = {
-  BUN_INSTALL: ( $env.XDG_DATA_HOME | path join "bun" )
-  BUN_HOME: ( $env.XDG_DATA_HOME | path join "bun" )
+  BUN_INSTALL: ($env.XDG_DATA_HOME | path join bun)
+  BUN_HOME: ($env.XDG_DATA_HOME | path join bun)
 }
 
 let go = {
-  GOPATH: ( $env.XDG_DATA_HOME | path join "go" )
-  GOBIN: ( $env.XDG_DATA_HOME | path join "go/bin" )
+  GOPATH: ($env.XDG_DATA_HOME | path join go)
+  GOBIN: ($env.XDG_DATA_HOME | path join go/bin)
 }
 
 let gradle = {
-  GRADLE_USER_HOME: ( $env.XDG_DATA_HOME | path join "gradle" )
+  GRADLE_USER_HOME: ($env.XDG_DATA_HOME | path join gradle)
 }
 
 let dart = {
-  DART_HOME: ( $env.XDG_DATA_HOME | path join "dart" )
-  PUB_CACHE: ( $env.XDG_CACHE_HOME | path join "dart/pub" )
-  ANALYZER_STATE_LOCATION_OVERRIDE: ( $env.XDG_CACHE_HOME | path join "dart/server" )
-  DART_SDK_PATH: ( $env.XDG_DATA_HOME | path join "dart/sdk" )
-  DART_SDK: ( $env.XDG_DATA_HOME | path join "dart/sdk" )
+  DART_HOME: ($env.XDG_DATA_HOME | path join dart)
+  PUB_CACHE: ($env.XDG_CACHE_HOME | path join dart/pub)
+  ANALYZER_STATE_LOCATION_OVERRIDE: ($env.XDG_CACHE_HOME | path join dart/server)
+  DART_SDK_PATH: ($env.XDG_DATA_HOME | path join dart/sdk)
+  DART_SDK: ($env.XDG_DATA_HOME | path join dart/sdk)
 }
 
 let flutter = {
-  FLUTTER_HOME: ( $env.XDG_DATA_HOME | path join "flutter" )
-  FLUTTER_STORAGE_BASE: ( $env.XDG_DATA_HOME | path join "flutter" )
-  FVM_CACHE_PATH: ( $env.XDG_CACHE_HOME | path join "fvm" )
+  FLUTTER_HOME: ($env.XDG_DATA_HOME | path join flutter)
+  FLUTTER_STORAGE_BASE: ($env.XDG_DATA_HOME | path join flutter)
+  FVM_CACHE_PATH: ($env.XDG_CACHE_HOME | path join fvm)
 }
 
 let rust = {
-  CARGO_HOME: ( $env.XDG_DATA_HOME | path join "cargo" )
+  CARGO_HOME: ($env.XDG_DATA_HOME | path join cargo)
   # RUSTUP_HOME: ( $env.XDG_DATA_HOME | path join "rustup" )
-  CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER: "gcc"
+  CARGO_TARGET_AARCH64_APPLE_DARWIN_LINKER: gcc
 }
 
 let less = {
   LESSHISTFILE: (
     [
-      $env.HOME,
-      '.local'
-      'state'
-      'lesshst'
+      $env.HOME
+      .local
+      state
+      lesshst
     ]
   )
 }
 
 let zsh = {
-  ZSH_COMPDUMP: ( $env.XDG_CACHE_HOME | path join "zsh/zcompdump" )
+  ZSH_COMPDUMP: ($env.XDG_CACHE_HOME | path join zsh/zcompdump)
 }
 
 let c = {
-  CC: "/opt/homebrew/opt/llvm/bin/clang"
-  CXX: "/opt/homebrew/opt/llvm/bin/clang++"
-  LD: "lld-link"
+  CC: /opt/homebrew/opt/llvm/bin/clang
+  CXX: /opt/homebrew/opt/llvm/bin/clang++
+  LD: lld-link
   CPATH: $"/opt/homebrew/opt/libarchive/bin:($env.CPATH?)"
   CPPFLAGS: "-I/opt/homebrew/opt/llvm/include"
   DYLD_LIBRARY_PATH: $"($env.LIBRARY_PATH?):($env.DYLD_LIBRARY_PATH?)"
@@ -121,17 +120,17 @@ let c = {
 }
 
 let git = {
-  GIT_CONFIG_GLOBAL: ($env.XDG_CONFIG_HOME | path join "git/config")
-  GIT_TEMPLATE_DIR: ($env.XDG_CONFIG_HOME | path join "git")
+  GIT_CONFIG_GLOBAL: ($env.XDG_CONFIG_HOME | path join git/config)
+  GIT_TEMPLATE_DIR: ($env.XDG_CONFIG_HOME | path join git)
 }
 
 let gh = {
-  GH_PAGER: "diffnav"
+  GH_PAGER: diffnav
 }
 
 let syncthing = {
-  STCONFDIR: ($env.HOME | path join ".config/syncthing")
-  STDATADIR: ($env.HOME | path join ".local/share/syncthing")
+  STCONFDIR: ($env.HOME | path join .config/syncthing)
+  STDATADIR: ($env.HOME | path join .local/share/syncthing)
 }
 
 let lua = {
@@ -146,7 +145,7 @@ let lua = {
         | path join "lua/lua_modules/share/lua/5.4/?/init.lua;;"
       )
     ]
-    | str join 
+    | str join
   )
   LUA_CPATH: (
     $env.XDG_DATA_HOME
@@ -157,20 +156,20 @@ let lua = {
 let proto = {
   PROTO_HOME: (
     [
-      $env.XDG_DATA_HOME,
-      "proto"
+      $env.XDG_DATA_HOME
+      proto
     ] | path join
   )
-  PROTO_CONFIG_MODE: 'global'
+  PROTO_CONFIG_MODE: global
 }
 
 let asdf = {
-  ASDF_TOOL_VERSIONS_FILENAME: ".tool-versions"
-  ASDF_DATA_DIR: ($env.XDG_DATA_HOME | path join "asdf")
+  ASDF_TOOL_VERSIONS_FILENAME: .tool-versions
+  ASDF_DATA_DIR: ($env.XDG_DATA_HOME | path join asdf)
   ASDF_CONFIG_FILE: (
     $env.XDG_CONFIG_HOME
-    | path join "asdf"
-    | path join "asdfrc"
+    | path join asdf
+    | path join asdfrc
   )
 }
 
@@ -205,7 +204,6 @@ let env_groups = [
   $proto
   $asdf
   $topiary
-
 ];
 
 for e in $env_groups {

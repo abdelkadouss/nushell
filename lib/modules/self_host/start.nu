@@ -6,7 +6,7 @@ use ../../shared/external *;
 
 alias run = external run;
 
-export def apps [] {
+export def apps [ ] {
   let data_path = (get_data_path);
   (
     open ($data_path | path join "apps.toml")
@@ -16,8 +16,8 @@ export def apps [] {
   )
 };
 
-export def "self host start" [app_name: string@apps] {
-  external exist --panic true [ "colima", "docker" ];
+export def "self host start" [ app_name: string@apps ] {
+  external exist --panic true [ colima docker ];
 
   let data_path = (get_data_path);
 
@@ -66,9 +66,9 @@ export def "self host start" [app_name: string@apps] {
     export-env {
       nu (
         [
-          $data_path,
-          ".self_host_custom_host_script",
-          $app_name ,
+          $data_path
+          ".self_host_custom_host_script"
+          $app_name
           $"($app_name).nu"
         ] | path join
       ) start
@@ -80,4 +80,3 @@ export def "self host start" [app_name: string@apps] {
 
   print $"(ansi green_bold)done thank's to Allah, the app now should be up.(ansi reset)"
 }
-

@@ -1,0 +1,3 @@
+[rules]
+nu_parse_error = "off"
+closure_brace_pipe_spacing = "off"

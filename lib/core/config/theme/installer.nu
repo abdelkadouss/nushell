@@ -1,26 +1,25 @@
 let THEME_DIR = (
   [
     $env.NU_DATA_DIR
-    "themes"
+    themes
   ] | path join
 )
 
-mkdir $THEME_DIR;
+try { mkdir $THEME_DIR };
 
 let themes = [
   {
-    name: "catppuccin_mocha"
-    url: ( url from-default-repo catppuccin-mocha )
+    name: catppuccin_mocha
+    url: (url from-default-repo catppuccin-mocha)
   }
   {
-    name: "tokyonight_night"
-    url: ( url from-default-repo tokyo-night )
+    name: tokyonight
+    url: (url from-default-repo tokyo-night)
   }
   {
-    name: "rose_pine"
-    url: ( url from-default-repo rose-pine )
+    name: rose_pine
+    url: (url from-default-repo rose-pine)
   }
-
 ]
 
 for theme in $themes {
@@ -29,12 +28,12 @@ for theme in $themes {
   let theme_path = (
     [
       $THEME_DIR
-      ( $theme.name | path with-extension "nu" )
+      ($theme.name | path with-extension "nu")
     ] | path join
   );
 
-  if not ( $theme_path | path exists ) {
-    if ( $theme.fetcher? | is-not-empty ) {
+  if not ($theme_path | path exists) {
+    if ($theme.fetcher? | is-not-empty) {
       do $theme.fetcher $theme.url
       | save -f $theme_path;
 
@@ -60,14 +59,14 @@ def 'url from-default-repo' [ theme_name: string ] {
   use std-rfc/path;
 
   {
-    "scheme": $DEFAULT_REPO.scheme,
-    "host": $DEFAULT_REPO.host,
+    "scheme": $DEFAULT_REPO.scheme
+    "host": $DEFAULT_REPO.host
     "path": (
       [
         $DEFAULT_REPO.path
-        ( $theme_name | path with-extension "nu" )
+        ($theme_name | path with-extension "nu")
       ] | path join
-    ),
-    } | url join
+    )
+  } | url join
 
 }

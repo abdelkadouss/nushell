@@ -6,10 +6,10 @@ use ../../shared/external *;
 
 alias run = external run;
 
-export def apps [] {
+export def apps [ ] {
   let data_path = (get_data_path);
   (
-    open 
+    open
     (
       $data_path
       | path join "apps.toml"
@@ -21,16 +21,16 @@ export def apps [] {
 };
 
 export def "self host stop" [
-  app_name: string@apps ,
-  --stop-machine(-m) = false
-  ] {
+  app_name: string@apps
+  --stop-machine (-m) = false
+] {
 
-  external exist --panic true [ "colima", "docker" ];
+  external exist --panic true [ colima docker ];
 
   let data_path = (get_data_path);
 
   let app_path = (
-    open 
+    open
     (
       $data_path
       | path join "apps.toml"
@@ -38,7 +38,6 @@ export def "self host stop" [
     | get apps
     | get -o $app_name
     | get path
-
   );
 
   let app_type = (
@@ -49,7 +48,6 @@ export def "self host stop" [
     | get apps
     | get -o $app_name
     | get type
-
   );
 
   if ($app_path | is-empty) {

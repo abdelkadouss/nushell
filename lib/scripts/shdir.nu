@@ -1,7 +1,7 @@
 use ../shared/external *;
 
-export def main [] {
-  external exist --panic true ["python3"];
+export def main [ ] {
+  external exist --panic true [ python3 ];
   let myIpAdr = (
     sys net
     | where name == en0

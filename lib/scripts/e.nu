@@ -12,13 +12,15 @@
 use ../shared/external *;
 
 const FZF_DEFAULT_OPTS = [
-  "--height=10",
-  "--layout=reverse",
+  "--height=10"
+  "--layout=reverse"
   "--preview='if ( {} | path type ) == file { bat {} } else { lstr {} }'"
 ];
 
 module error {
-  export def EDITOR_env_var_not_seted [] {
+  # nu-lint-ignore: kebab_case_commands
+  export def EDITOR-env-var-not-seted [ ]: nothing -> error {
+    # nu-lint-ignore: add_label_to_error
     error make {
       msg: "the EDITOR env var is not seted"
       help: "go ahead and set it to your favorite editor"
@@ -27,45 +29,15 @@ module error {
 
   }
 
-  export def editor_not_in_path [] {
-    error make {
-      msg: $"the editor $($env.EDITOR?) is not in the path"
-      help: "go ahead and add install it or it to the path"
-
-    }
-
-  }
-
-  export def alias_file_not_exists [] {
-    error make {
-      msg: "the alias file is not exists"
-      help: "create the alias file"
-
-    }
-
-  }
-  export def alias_file_not_readable [] {
-    error make {
-      msg: "the alias file is not readable"
-      label: {
-        text: $"not readable $($env.config.plugins.e.alias_file)"
-        span: (metadata $env.config.plugins.e.alias_file).span
-      }
-      help: "use: {alais: value}"
-
-    }
-
-  }
-
 }
 
 module zoxide {
-  export def --env go [ ...rest:string ] {
+  export def --env go [ ...rest: string ]: any -> bool {
     overlay new zoxide_go;
 
     let path = match $rest {
-      [] => { '~' },
-      [ '-' ] => { '-' },
+      [ ] => { '~' }
+      [ '-' ] => { '-' }
       [ $arg ] if (
         $arg
         | path expand
@@ -73,7 +45,7 @@ module zoxide {
       ) == 'dir' => { $arg }
       _ => {
         zoxide query `--exclude` $env.PWD `--` ...$rest
-        | str trim -r -c (char nl)
+        | str trim -r --char (char nl)
       }
 
     }
@@ -82,16 +54,17 @@ module zoxide {
 
     cd $path
 
-    overlay hide zoxide_go --keep-env [ PWD, ZOXIDE_GO_PATH ];
+    overlay hide zoxide_go --keep-env [ PWD ZOXIDE_GO_PATH ];
 
-    ( $env.ZOXIDE_GO_PATH | is-not-empty )
+    ($env.ZOXIDE_GO_PATH | is-not-empty)
 
   }
 
 }
 
 module editor {
-  export def --wrapped run [ ...input: string ] {
+  # run the editor set in the env var EDITOR
+  export def --wrapped run [ ...input: string ]: nothing -> nothing {
     # test that is EDITOR env is seted and it's in the path
     let editor = (
       try {
@@ -99,17 +72,18 @@ module editor {
 
       } catch {
         use error
-        error EDITOR_env_var_not_seted;
+        error EDITOR-env-var-not-seted;
 
       }
     );
 
+    # nu-lint-ignore: spread_list_to_external
     external exist --panic true [ $editor ];
 
-    let as_admin = ( $env.dev?.as_admin? | default false );
+    let as_admin = ($env.dev?.as_admin? | default false);
 
     if $as_admin {
-      if ( $input | is-empty ) {
+      if ($input | is-empty) {
         external run --dont-wait-return-value-to-exit true --as-root true $editor;
 
       } else {
@@ -118,7 +92,7 @@ module editor {
       }
 
     } else {
-      if ( $input | is-empty ) {
+      if ($input | is-empty) {
         external run --dont-wait-return-value-to-exit true $editor;
 
       } else {
@@ -132,8 +106,18 @@ module editor {
 }
 
 # HACK: add this to the main cmd as complation like so if u wanna use it: ...files: string@history-edits
-# def history-edits [] {
-#   history  | get command | where {|cmd| $cmd | str starts-with 'e ' } | str substring 1.. | str trim | uniq
+# def history-edits [ ]: any -> list<any> {
+#   history
+#   | last 100
+#   | get command
+#   | where { |it| $it | str starts-with 'e ' }
+#   | str substring 1..
+#   | str trim
+#   | uniq
+#   | prepend (
+#     ls --all
+#     | get name
+#   )
 # }
 
 # this script gonna insha'Allah jumps to dirs or files and open the editor in base on a query u pass. It try to read the current dir contiants + the dirs u visetd in the past (using zoxide) and fuzzy finding via fzf. So it's gonna insha'Allah jump directly to project/file u wannat in smart way insha'Allah.
@@ -161,73 +145,70 @@ module editor {
   cd -;
   e shell; # it's should open ~/.config/nushell/config.nu insha'Allah.
 }
-@search-terms 'open' 'edit' 'open file'
+@search-terms 'open' edit 'open file'
 export def --wrapped main [
-  --fzf(-f) # open with fzf
-  --zoxide(-z) # open file/dir form zoxide history
-  --new(-n) # make the file if not exists
-  --as-admin(-a) # run as root
+  # nu-lint-ignore: max_function_body_length
+  --fzf (-f) # open with fzf
+  --zoxide (-z) # open file/dir form zoxide history
+  --new (-n) # make the file if not exists
+  --as-admin (-a) # run as root
   ...files: string # files/dir query to open
-] {
+]: nothing -> nothing {
   if $as_admin { $env.dev.as_admin = true };
 
-  if ( $files | is-empty ) {
+  if ($files | is-empty) {
     use editor;
     editor run;
 
   } else if $fzf {
     # make sure fzf is in the path in Chaa'Allah
-    external exist --panic true [ "fzf" ];
+    external exist --panic true [ fzf ]; # nu-lint-ignore: spread_list_to_external
 
     use editor;
 
     (
-      run-external fzf ...$FZF_DEFAULT_OPTS "--border-label='" "--query" ( $files | str join "" )
+      run-external fzf ...$FZF_DEFAULT_OPTS "--border-label='" "--query" ($files | str join "")
     ) | (
-      if ( $in | is-empty ) {
+      if ($in | is-empty) {
         return;
 
-      } else if ( $in | path type ) == 'dir' {
+      } else if ($in | path type) == dir {
         cd $in;
         "."
 
       } else {
         $in
 
-      } 
+      }
     )
     | editor run $in;
 
   } else if $zoxide {
     # make sure fzf and zoxide is in the path in Chaa'Allah
-    external exist --panic true [ "fzf", "zoxide" ];
+    external exist --panic true [ fzf zoxide ];
 
     use editor;
 
     (
       external run zoxide query `--interactive` `--` ...$files
-      | str trim -r -c (char nl)
+      | str trim --right --char (char nl)
     )
     | (
-      if ( $in | is-empty ) { return };
+      if ($in | is-empty) { return };
 
-      cd $in;
-      editor run;
-
+      cd $in; editor run;
     );
 
   } else if (
-    $env.config.plugins.e?.alias?
-    | get -o $files.0
-    | is-not-empty
+    $env.config.plugins.e?.alias? has $files.0
   ) {
     use editor;
 
     $env.config.plugins.e.alias
-    | get -o $files.0
+    | get --optional $files.0
     | path expand
     | (
-      if ( $in | path type ) == 'dir' {
+      if ($in | path type) == dir {
         cd $in;
         editor run;
 
@@ -243,7 +224,7 @@ export def --wrapped main [
     # check if the given path exists
     $files
     | path exists
-    | any {|exising| $exising }
+    | any { |exising| $exising }
     | if $in or $new {
       for file in $files {
         $file
@@ -256,7 +237,7 @@ export def --wrapped main [
         }
       }
 
-      editor run ...( $files | path expand );
+      editor run ...($files | path expand);
 
     } else {
       use zoxide;
@@ -269,17 +250,17 @@ export def --wrapped main [
       } else {
         mut path = "";
         mut to_handle = $files;
-        mut not_handled = [];
+        mut not_handled = [ ];
 
-        while ( $to_handle | is-not-empty ) {
+        while ($to_handle | is-not-empty) {
           let zoxide_output = try {
             external run zoxide query `--` $path ...$to_handle
           } catch { null };
 
-          if ( $zoxide_output | is-not-empty ) {
+          if ($zoxide_output | is-not-empty) {
             $path = (
               [
-                $zoxide_output,
+                $zoxide_output
                 $path
               ] | path join
             );
@@ -291,14 +272,14 @@ export def --wrapped main [
               $not_handled
               | append (
                 $to_handle
-                | last
+                | try { last } catch { [ ] }
               ) | uniq
             );
 
             $to_handle = (
               $to_handle
               | take (
-                ( $to_handle | length ) - 1
+                ($to_handle | length) - 1
               )
             );
 
@@ -306,17 +287,17 @@ export def --wrapped main [
 
         }
 
-        if ( $path | is-not-empty ) {
+        if ($path | is-not-empty) {
           use editor;
 
           cd $path;
 
-          external run fzf ...$FZF_DEFAULT_OPTS $"--border-label=(pwd)" `--query` ( $not_handled | reverse | str join "" )
-          | str trim -r -c (char nl)
+          external run fzf ...$FZF_DEFAULT_OPTS $"--border-label=(pwd)" `--query` ($not_handled | reverse | str join "")
+          | str trim --right --char (char nl)
           | editor run $in;
 
         } else {
-          print -e "path not found 📭";
+          print --stderr "path not found 📭";
 
         }
 
