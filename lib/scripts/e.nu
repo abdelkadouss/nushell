@@ -32,7 +32,7 @@ module error {
 }
 
 module zoxide {
-  export def --env go [ ...rest: string ]: any -> bool {
+  export def --env go [ ...rest: string ]: nothing -> bool {
     overlay new zoxide_go;
 
     let path = match $rest {
@@ -45,7 +45,7 @@ module zoxide {
       ) == 'dir' => { $arg }
       _ => {
         zoxide query `--exclude` $env.PWD `--` ...$rest
-        | str trim -r --char (char nl)
+        | str trim --right --char (char nl)
       }
 
     }
@@ -106,7 +106,7 @@ module editor {
 }
 
 # HACK: add this to the main cmd as complation like so if u wanna use it: ...files: string@history-edits
-# def history-edits [ ]: any -> list<any> {
+# def history-edits [ ]: nothing -> list<any> {
 #   history
 #   | last 100
 #   | get command
@@ -145,9 +145,8 @@ module editor {
   cd -;
   e shell; # it's should open ~/.config/nushell/config.nu insha'Allah.
 }
-@search-terms 'open' edit 'open file'
+@search-terms open edit 'open file'
 export def --wrapped main [
-  # nu-lint-ignore: max_function_body_length
   --fzf (-f) # open with fzf
   --zoxide (-z) # open file/dir form zoxide history
   --new (-n) # make the file if not exists
@@ -272,7 +271,7 @@ export def --wrapped main [
               $not_handled
               | append (
                 $to_handle
-                | try { last } catch { [ ] }
+                | last
               ) | uniq
             );
 

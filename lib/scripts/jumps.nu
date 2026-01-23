@@ -11,7 +11,7 @@ def append_nl_to_file [
   line: string
   file: string
 ] {
-  $"( $line )( char nl )"
+  $"($line)(char nl)"
   | save --append --force $file;
 }
 
@@ -21,7 +21,7 @@ def join_with_pid [
     [
       $in
       '.'
-      ( $nu.pid | into string )
+      ($nu.pid | into string)
     ]
     | str join
   )
@@ -32,13 +32,13 @@ export module 'jump hooks' {
     before
     after
   ] {
-    let forward_file = ( $env.config.plugins.jumps.forward_file | join_with_pid );
-    let backward_file = ( $env.config.plugins.jumps.backward_file | join_with_pid );
+    let forward_file = ($env.config.plugins.jumps.forward_file | join_with_pid);
+    let backward_file = ($env.config.plugins.jumps.backward_file | join_with_pid);
 
-    if ( $env.tmp?.plugin?.jumps?.is_jumped? | default false ) {
+    if ($env.tmp?.plugin?.jumps?.is_jumped? | default false) {
       $env.tmp.plugin.jumps.is_jumped = false;
 
-      if ( $env.tmp.plugin.jumps.jump_type == 'backward' ) {
+      if ($env.tmp.plugin.jumps.jump_type == 'backward') {
         append_nl_to_file $before $forward_file;
 
         return;
@@ -57,19 +57,58 @@ export module 'jump hooks' {
   }
 
   # cleanup the jumps tmp files
-  export def cleanup [] {
-    rm -rfp ( $env.config.plugins.jumps.backward_file | join_with_pid );
-    rm -rfp ( $env.config.plugins.jumps.forward_file | join_with_pid );
+  export def cleanup [ ] {
+    # if needed pathes already exist
+    rm -rfp ($env.config.plugins.jumps.backward_file | join_with_pid);
+    rm -rfp ($env.config.plugins.jumps.forward_file | join_with_pid);
+
+    # clean up the old tmp files for previous sessions
+    const DIR_PATH = "/tmp/nu"
+
+    let nu_jumps_tmps = (
+      ls --all --short-names ($DIR_PATH | path expand)
+      | get name
+      | each { |it|
+        split row .
+        | last
+        | into int
+        | {
+          path: (
+            [
+              $DIR_PATH
+              $it
+            ] | path join
+          )
+          pid: $in
+        }
+
+      }
+    );
+
+    let ps_pids = (
+      ps --long
+      | get pid
+    );
+
+    for tmp in $nu_jumps_tmps {
+      if not (
+        $tmp.pid in $ps_pids
+      ) {
+        rm --force --recursive --permanent $tmp.path;
+
+      }
+
+    }
 
   }
 
-  export def init [] {
-    mkdir ( $env.config.plugins.jumps.backward_file | path dirname );
-    mkdir ( $env.config.plugins.jumps.forward_file | path dirname );
+  export def init [ ] {
+    mkdir ($env.config.plugins.jumps.backward_file | path dirname);
+    mkdir ($env.config.plugins.jumps.forward_file | path dirname);
   }
 }
 
-def --env 'jump' [
+def --env jump [
   jumps_file: string
 ] {
   let jumps = (
@@ -79,13 +118,13 @@ def --env 'jump' [
     | lines
   );
 
-  let jumps_len = ( $jumps | length );
+  let jumps_len = ($jumps | length);
 
   if $jumps_len > 0 {
-    cd ( $jumps | last );
+    cd ($jumps | last);
 
     $jumps
-    | first ( $jumps_len - 1 )
+    | first ($jumps_len - 1)
     | save --force $jumps_file;
 
   }
@@ -104,8 +143,8 @@ def --env 'jump' [
   jump backward; # some/path
   # HINT: try help: jump forward
 }
-export def --env 'jump backward' [] {
-  jump ( $env.config.plugins.jumps.backward_file | join_with_pid );
+export def --env 'jump backward' [ ] {
+  jump ($env.config.plugins.jumps.backward_file | join_with_pid);
 
   $env.tmp.plugin.jumps.jump_type = 'backward';
 
@@ -119,20 +158,20 @@ export def --env 'jump backward' [] {
   jump backward; # some/path
   jump forward; # some/path/there
 }
-export def --env 'jump forward' [] {
-  jump ( $env.config.plugins.jumps.forward_file | join_with_pid );
+export def --env 'jump forward' [ ] {
+  jump ($env.config.plugins.jumps.forward_file | join_with_pid);
 
   $env.tmp.plugin.jumps.jump_type = 'forward';
 
 }
 
 # cleanup the jumps tmp files
-export def 'jump cleanup' [] {
-  ( glob $"( $env.config.plugins.jumps.backward_file ).*" )
+export def 'jump cleanup' [ ] {
+  (glob $"($env.config.plugins.jumps.backward_file).*")
   | append (
-    glob $"( $env.config.plugins.jumps.forward_file ).*"
+    glob $"($env.config.plugins.jumps.forward_file).*"
   )
-  | each {|file|
+  | each { |file|
     rm -rfp $file;
 
   }
@@ -140,16 +179,16 @@ export def 'jump cleanup' [] {
 }
 
 # list the jumps (forward and backward)
-export def 'jump list' [] {
+export def 'jump list' [ ] {
   try {
     print $'(ansi gb)backward:(ansi reset)';
-    open --raw ( $env.config.plugins.jumps.backward_file | join_with_pid )
+    open --raw ($env.config.plugins.jumps.backward_file | join_with_pid)
     | lines
   } | print $in
 
   try {
     print $'(ansi gb)forward:(ansi reset)';
-    open --raw ( $env.config.plugins.jumps.forward_file | join_with_pid )
+    open --raw ($env.config.plugins.jumps.forward_file | join_with_pid)
     | lines
   } | print $in
 
